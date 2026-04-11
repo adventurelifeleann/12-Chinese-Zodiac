@@ -1,196 +1,323 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NI HAO Zodiac Finder</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Your Zodiac Cocktail | NI HAO</title>
+    <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #b59b58;
+            --dark-green: #111d1a;
+            --text-light: #e0e0e0;
+            --border-color: #3a4744;
+        }
 
-<style>
-body {
-    margin:0;
-    font-family: 'Segoe UI', sans-serif;
-    background:#0f0f0f;
-    color:#f5d27a;
-    text-align:center;
-}
+        body {
+            background-color: var(--dark-green);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-header {
-    padding:20px;
-    border-bottom:1px solid #333;
-}
+        /* Header & Logo */
+        header {
+            padding: 40px 20px;
+            text-align: center;
+            width: 100%;
+        }
 
-header img {
-    height:60px;
-}
+        .logo-container {
+            max-width: 300px;
+            margin: 0 auto;
+            border-top: 1px solid var(--primary-gold);
+            border-bottom: 1px solid var(--primary-gold);
+            padding: 15px 0;
+        }
 
-.container {
-    padding:20px;
-}
+        .logo-text {
+            font-family: 'Cinzel', serif;
+            font-size: 2.5rem;
+            letter-spacing: 12px;
+            color: var(--primary-gold);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
 
-h2 {
-    font-weight:300;
-}
+        .logo-cn {
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #5b6e6a; /* 灰綠色 */
+        }
 
-input {
-    padding:12px;
-    font-size:16px;
-    border-radius:10px;
-    border:none;
-    margin-top:10px;
-    width:200px;
-}
+        /* Main Content */
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 30px;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 50px;
+            border: 1px solid var(--border-color);
+        }
 
-button {
-    padding:12px 20px;
-    margin-top:15px;
-    background:#d4af37;
-    border:none;
-    border-radius:10px;
-    font-weight:bold;
-    cursor:pointer;
-}
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--primary-gold);
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
 
-.result {
-    margin-top:25px;
-    text-align:left;
-    max-width:500px;
-    margin-left:auto;
-    margin-right:auto;
-    line-height:1.8;
-}
+        .input-group {
+            margin-bottom: 25px;
+            text-align: center;
+        }
 
-.card {
-    background:#1a1a1a;
-    padding:20px;
-    border-radius:12px;
-    margin-top:20px;
-}
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
 
-.footer {
-    margin-top:40px;
-    padding:20px;
-    border-top:1px solid #333;
-    font-size:14px;
-    color:#ccc;
-}
-</style>
+        input[type="date"] {
+            background: transparent;
+            border: 1px solid var(--primary-gold);
+            color: white;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 0;
+            width: 80%;
+            outline: none;
+            text-align: center;
+        }
+
+        button {
+            background: var(--primary-gold);
+            color: var(--dark-green);
+            border: none;
+            padding: 12px 30px;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #d4bc7d;
+        }
+
+        /* Results Section */
+        #result {
+            display: none;
+            margin-top: 40px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .result-item {
+            margin-bottom: 20px;
+        }
+
+        .label-gold {
+            color: var(--primary-gold);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .value-text {
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .profile-box {
+            background: rgba(181, 155, 88, 0.1);
+            padding: 20px;
+            border-left: 3px solid var(--primary-gold);
+            margin-top: 20px;
+            line-height: 1.6;
+        }
+
+        .element-guide {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Footer */
+        footer {
+            width: 100%;
+            padding: 40px 0;
+            background: #0a1110;
+            text-align: center;
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer-title {
+            color: var(--primary-gold);
+            letter-spacing: 3px;
+            font-family: 'Cinzel', serif;
+            margin-bottom: 15px;
+        }
+
+        .footer-info {
+            line-height: 2;
+            color: #999;
+        }
+
+        .footer-info b { color: var(--text-light); }
+    </style>
 </head>
-
 <body>
 
-<header>
-    <img src="NiHao Logo-1.png" alt="NI HAO Logo">
-</header>
+    <header>
+        <div class="logo-container">
+            <h1 class="logo-text">N I <span class="logo-cn">你好</span> H A O</h1>
+        </div>
+    </header>
 
-<div class="container">
+    <div class="container">
+        <h1>Discover Your Destiny</h1>
+        <div class="input-group">
+            <label for="birthday">Select Your Birthday</label>
+            <input type="date" id="birthday" min="1920-01-01" max="2035-12-31">
+            <button onclick="calculate()">REVEAL</button>
+        </div>
 
-<h2>Discover Your Chinese Zodiac & Lunar Birthday</h2>
+        <div id="result">
+            <div class="result-item">
+                <span class="label-gold">Lunar Birthday</span>
+                <span id="lunarDate" class="value-text"></span>
+            </div>
+            <div class="result-item">
+                <span class="label-gold">Zodiac Sign</span>
+                <span id="zodiac" class="value-text"></span>
+            </div>
+            <div class="result-item">
+                <span class="label-gold">Five Elements</span>
+                <span id="element" class="value-text"></span>
+                <div class="element-guide">
+                    Guide: Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
+                </div>
+            </div>
+            <div class="result-item">
+                <span class="label-gold">Horoscope</span>
+                <span id="horoscope" class="value-text"></span>
+            </div>
+            <div class="profile-box">
+                <span class="label-gold">Personality Profile</span>
+                <span id="personality"></span>
+            </div>
+        </div>
+    </div>
 
-<p>Select your birthday</p>
+    <footer>
+        <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
+        <div class="footer-info">
+            <b>Contact</b><br>
+            TEL: 01202 611622 | EMAIL: hello@ni-hao.life<br><br>
+            <b>Location</b><br>
+            89 Commercial Road, Poole, Dorset BH14 0JD
+        </div>
+    </footer>
 
-<input type="date" id="birthdate">
-<br>
-<button onclick="calculate()">CHECK</button>
+    <script>
+        const zodiacProfiles = {
+            "Rat": "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles.",
+            "Ox": "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm.",
+            "Tiger": "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them.",
+            "Rabbit": "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace.",
+            "Dragon": "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy.",
+            "Snake": "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind.",
+            "Horse": "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces.",
+            "Goat": "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions.",
+            "Monkey": "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They are master problem solvers who love to entertain.",
+            "Rooster": "Hardworking, observant, courageous, punctual, and loves to stand out. They are loyal friends who value honesty and present themselves with great pride.",
+            "Dog": "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. Their integrity and sense of justice are unmatched.",
+            "Pig": "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac."
+        };
 
-<div class="result" id="result"></div>
+        function getHoroscope(date) {
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return "Aquarius";
+            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return "Pisces";
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return "Aries";
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return "Taurus";
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return "Gemini";
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return "Cancer";
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return "Leo";
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return "Virgo";
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return "Libra";
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return "Scorpio";
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return "Sagittarius";
+            return "Capricorn";
+        }
 
-</div>
+        function calculate() {
+            const dateVal = document.getElementById('birthday').value;
+            if (!dateVal) {
+                alert("Please select your birthday first.");
+                return;
+            }
 
-<div class="footer">
-    <p><strong>NI HAO RESTAURANT - POOLE</strong></p>
-    <p>Contact - TEL 01202 611622 | EMAIL hello@ni-hao.life</p>
-    <p>Location - 89 Commercial Road, Poole, Dorset BH14 0JD</p>
-</div>
+            const date = new Date(dateVal);
+            // 使用 Lunar-javascript 進行轉換
+            const lunar = Solar.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate()).getLunar();
 
-<script>
+            // 1. 農曆日期格式化 (英文)
+            const monthNames = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            const lunarDateStr = `Year ${lunar.getYear()}, Month ${lunar.getMonth()}, Day ${lunar.getDay()} (Lunar Calendar)`;
+            document.getElementById('lunarDate').innerText = lunarDateStr;
 
-// ===== 農曆核心資料（1920–2035）=====
-const lunarInfo = [
-0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
-0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
-0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
-0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
-0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
-0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,
-0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
-0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
-0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
-0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,
-0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
-0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
-0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
-0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
-0x0b5a0,0x056d0,0x055b2
-];
+            // 2. 生肖 (Zodiac)
+            const zodiac = lunar.getYearZodiac();
+            // 對應翻譯
+            const zodiacMap = { "鼠": "Rat", "牛": "Ox", "虎": "Tiger", "兔": "Rabbit", "龍": "Dragon", "蛇": "Snake", "馬": "Horse", "羊": "Goat", "猴": "Monkey", "雞": "Rooster", "狗": "Dog", "豬": "Pig" };
+            const zodiacEn = zodiacMap[zodiac] || zodiac;
+            document.getElementById('zodiac').innerText = zodiacEn;
 
-// ===== Zodiac =====
-const animals = ["Rat","Ox","Tiger","Rabbit","Dragon","Snake","Horse","Goat","Monkey","Rooster","Dog","Pig"];
+            // 3. 五行 (Element)
+            // 根據天干計算五行
+            const gan = lunar.getYearGan();
+            const elementMap = { "甲": "Wood", "乙": "Wood", "丙": "Fire", "丁": "Fire", "戊": "Earth", "己": "Earth", "庚": "Metal", "辛": "Metal", "壬": "Water", "癸": "Water" };
+            document.getElementById('element').innerText = elementMap[gan];
 
-// ===== Personality（完整保留 + 擴充）=====
-const personality = {
-Rat:`Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. They are highly adaptable, socially aware, and often succeed in dynamic environments.`,
-Ox:`Diligent, strong, dependable, determined, and honest. Known for their patience. They value stability, tradition, and are incredibly trustworthy in both work and relationships.`,
-Tiger:`Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. They are competitive, bold decision-makers, and thrive on challenge.`,
-Rabbit:`Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. They are diplomatic and often bring harmony to any situation.`,
-Dragon:`Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They are energetic visionaries and attract success.`,
-Snake:`Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They often possess strong emotional intelligence and strategic thinking.`,
-Horse:`Energetic, free-spirited, independent, and always chasing progress. They love movement, excitement, and are highly motivated individuals.`,
-Goat:`Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. They are artistic and emotionally intuitive.`,
-Monkey:`Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They excel at problem-solving and thinking outside the box.`,
-Rooster:`Hardworking, observant, courageous, punctual, and loves to stand out. They are confident and highly organized.`,
-Dog:`Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. They value justice and strong relationships.`,
-Pig:`Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. They enjoy life and value comfort and sincerity.`
-};
+            // 4. 星座 (Horoscope)
+            document.getElementById('horoscope').innerText = getHoroscope(date);
 
-// ===== Horoscope =====
-function getHoroscope(d){
-let m=d.getMonth()+1,day=d.getDate();
-if((m==3&&day>=21)||(m==4&&day<=19))return"Aries";
-if((m==4&&day>=20)||(m==5&&day<=20))return"Taurus";
-if((m==5&&day>=21)||(m==6&&day<=20))return"Gemini";
-if((m==6&&day>=21)||(m==7&&day<=22))return"Cancer";
-if((m==7&&day>=23)||(m==8&&day<=22))return"Leo";
-if((m==8&&day>=23)||(m==9&&day<=22))return"Virgo";
-if((m==9&&day>=23)||(m==10&&day<=22))return"Libra";
-if((m==10&&day>=23)||(m==11&&day<=21))return"Scorpio";
-if((m==11&&day>=22)||(m==12&&day<=21))return"Sagittarius";
-if((m==12&&day>=22)||(m==1&&day<=19))return"Capricorn";
-if((m==1&&day>=20)||(m==2&&day<=18))return"Aquarius";
-return"Pisces";
-}
+            // 5. 個性描述 (Personality Profile)
+            document.getElementById('personality').innerText = zodiacProfiles[zodiacEn];
 
-// ===== 核心轉換 =====
-function calculate(){
-let val=document.getElementById("birthdate").value;
-if(!val)return;
-
-let date=new Date(val);
-let year=date.getFullYear();
-
-// Zodiac（農曆年修正）
-let offset=year-1924;
-let zodiac=animals[offset%12];
-
-let horoscope=getHoroscope(date);
-
-document.getElementById("result").innerHTML=`
-<div class="card">
-<p><strong>Lunar Birthday:</strong> Calculated using verified Chinese calendar data (1920–2035)</p>
-
-<p><strong>Zodiac:</strong> ${zodiac}</p>
-
-<p><strong>Five Elements:</strong><br>
-Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability)
-</p>
-
-<p><strong>Horoscope:</strong> ${horoscope}</p>
-
-<p><strong>Personality Profile:</strong><br>${personality[zodiac]}</p>
-</div>
-`;
-}
-
-</script>
-
+            // 顯示結果
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
 </body>
 </html>
