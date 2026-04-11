@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chinese Zodiac & Destiny Finder</title>
+    <style>
+        :root { --gold: #d4a017; --red: #8b0000; --dark: #1a1a1a; }
+        body { font-family: 'Georgia', serif; background-color: #fcf9f2; color: var(--dark); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .card { max-width: 500px; width: 100%; background: white; padding: 40px 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border: 1px solid #eee; position: relative; overflow: hidden; }
+        .card::before { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 8px; background: linear-gradient(90deg, var(--red), var(--gold)); }
+        
+        h1 { color: var(--red); font-size: 28px; margin-bottom: 10px; text-align: center; }
+        p.subtitle { text-align: center; font-style: italic; color: #666; margin-bottom: 30px; }
+        
+        .input-group { text-align: center; margin-bottom: 30px; }
+        input[type="date"] { padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; width: 80%; outline: none; transition: border 0.3s; }
+        input[type="date"]:focus { border-color: var(--gold); }
+        
+        button { background: var(--red); color: white; border: none; padding: 15px 35px; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; width: 100%; transition: transform 0.2s, background 0.3s; }
+        button:hover { background: #a50000; transform: translateY(-2px); }
+
+        #result { margin-top: 30px; display: none; animation: fadeIn 0.5s ease-in; }
+        .res-box { background: #fffcf5; border: 1px dashed var(--gold); padding: 20px; border-radius: 12px; }
+        .res-item { margin-bottom: 15px; line-height: 1.6; }
+        .label { font-weight: bold; color: var(--red); display: block; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .val { font-size: 18px; color: var(--dark); }
+        .desc-box { margin-top: 15px; font-size: 16px; color: #444; border-top: 1px solid #eee; padding-top: 15px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Lunar Destiny 🏮</h1>
+    <p class="subtitle">Discover your Chinese Zodiac & Personality</p>
+    
+    <div class="input-group">
+        <input type="date" id="dob" min="1920-01-01">
+    </div>
+    
+    <button onclick="revealDestiny()">Reveal My Destiny</button>
+
+    <div id="result">
+        <div class="res-box">
+            <div class="res-item">
+                <span class="label">Chinese Zodiac</span>
+                <span id="res-zodiac" class="val"></span>
+            </div>
+            <div class="res-item">
+                <span class="label">Fixed Element</span>
+                <span id="res-element" class="val"></span>
+            </div>
+            <div class="res-item">
+                <span class="label">Western Horoscope</span>
+                <span id="res-star" class="val"></span>
+            </div>
+            <div class="desc-box">
+                <span class="label">Personality Profile</span>
+                <p id="res-desc"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const data = {
+    "Rat": { title: "Rat (The Wit)", element: "Water", emoji: "🐀", desc: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac." },
+    "Ox": { title: "Ox (The Reliable)", element: "Earth", emoji: "🐂", desc: "Diligent, strong, dependable, determined, and honest. Known for their patience." },
+    "Tiger": { title: "Tiger (The Brave)", element: "Wood", emoji: "🐅", desc: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader." },
+    "Rabbit": { title: "Rabbit (The Elegant)", element: "Wood", emoji: "🐇", desc: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty." },
+    "Dragon": { title: "Dragon (The Majestic)", element: "Earth", emoji: "🐉", desc: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac." },
+    "Snake": { title: "Snake (The Enigmatic)", element: "Fire", emoji: "🐍", desc: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers." },
+    "Horse": { title: "Horse (The Energetic)", element: "Fire", emoji: "🐎", desc: "Energetic, free-spirited, independent, and always chasing progress." },
+    "Goat": { title: "Goat (The Harmonious)", element: "Earth", emoji: "🐐", desc: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things." },
+    "Monkey": { title: "Monkey (The Playful)", element: "Metal", emoji: "🐒", desc: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity." },
+    "Rooster": { title: "Rooster (The Radiant)", element: "Metal", emoji: "🐓", desc: "Hardworking, observant, courageous, punctual, and loves to stand out." },
+    "Dog": { title: "Dog (The Loyal)", element: "Earth", emoji: "🐕", desc: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others." },
+    "Pig": { title: "Pig (The Joyful)", element: "Water", emoji: "🐖", desc: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone." }
+};
+
+const animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+
+function getHoroscope(m, d) {
+    const signs = ["Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius"];
+    const dates = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
+    return d >= dates[m-1] ? signs[m%12] : signs[m-1];
+}
+
+function revealDestiny() {
+    const input = document.getElementById('dob').value;
+    if(!input) return alert("Please select your birthday.");
+    
+    const date = new Date(input);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    // Calculate Zodiac (Based on simplified lunar adjustment for UK guests)
+    // Most UK guests won't know if they were born before/after Chinese New Year.
+    // For a restaurant app, we use the Year base, but adjust if it's Jan/Feb for better accuracy.
+    let zodiacIndex = (year - 4) % 12;
+    if (month < 2) zodiacIndex = (zodiacIndex - 1 + 12) % 12; 
+
+    const zodiacKey = animals[zodiacIndex];
+    const info = data[zodiacKey];
+
+    document.getElementById('res-zodiac').innerText = `${info.emoji} ${info.title}`;
+    document.getElementById('res-element').innerText = info.element;
+    document.getElementById('res-star').innerText = getHoroscope(month, day);
+    document.getElementById('res-desc').innerText = info.desc;
+    
+    document.getElementById('result').style.display = 'block';
+}
+</script>
+
+</body>
+</html>
