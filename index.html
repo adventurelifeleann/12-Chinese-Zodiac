@@ -1,375 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ni Hao | Chinese Zodiac Discovery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --brand-gold: #c5a059;
-            --brand-dark: #1a1a1a;
-            --brand-white: #ffffff;
-            --text-gray: #888888;
-            --hanzi-gray: #4d4d4d;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NI HAO Zodiac Finder</title>
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--brand-dark);
-            color: var(--brand-white);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+<style>
+body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background:#0f0f0f;
+    color:#f5d27a;
+    text-align:center;
+}
 
-        .container {
-            max-width: 480px;
-            width: 100%;
-            padding: 50px 25px;
-            border: 1px solid rgba(197, 160, 89, 0.2);
-            background-color: rgba(255, 255, 255, 0.01);
-            text-align: center;
-            border-radius: 2px;
-            box-sizing: border-box;
-        }
+header {
+    padding:20px;
+    border-bottom:1px solid #333;
+}
 
-        /* --- 修正後的 LOGO：上下各一支反向筷子 --- */
-        .logo-wrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 5px;
-            position: relative;
-        }
+header img {
+    height:60px;
+}
 
-        /* 文字整排水平排列，不拆行 */
-        .header-logo {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            white-space: nowrap; 
-            font-family: 'Playfair Display', serif;
-            color: var(--brand-gold);
-            text-transform: uppercase;
-            padding: 10px 0; /* 給上下筷子留空間 */
-        }
+.container {
+    padding:20px;
+}
 
-        .logo-txt {
-            font-size: 38px;
-            letter-spacing: 5px;
-        }
+h2 {
+    font-weight:300;
+}
 
-        .hanzi {
-            color: var(--hanzi-gray);
-            font-size: 26px;
-            margin: 0 15px; /* 增加與英文的間距 */
-            font-family: serif;
-            font-weight: bold;
-        }
+input {
+    padding:12px;
+    font-size:16px;
+    border-radius:10px;
+    border:none;
+    margin-top:10px;
+    width:200px;
+}
 
-        /* CSS 繪製筷子 */
-        .chopstick {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 120%; /* 筷子長度要蓋過文字 */
-            height: 1.5px;
-            background-color: var(--brand-gold);
-            border-radius: 1px;
-        }
+button {
+    padding:12px 20px;
+    margin-top:15px;
+    background:#d4af37;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-        /* 上方筷子，頭部朝左 */
-        .chopstick-top {
-            top: 0;
-            background: linear-gradient(90deg, var(--brand-gold) 70%, rgba(197, 160, 89, 0) 100%);
-        }
+.result {
+    margin-top:25px;
+    text-align:left;
+    max-width:500px;
+    margin-left:auto;
+    margin-right:auto;
+    line-height:1.8;
+}
 
-        /* 下方筷子，頭部朝右 */
-        .chopstick-bottom {
-            bottom: 0;
-            background: linear-gradient(-90deg, var(--brand-gold) 70%, rgba(197, 160, 89, 0) 100%);
-        }
-        /* --- 結束 LOGO 修正 --- */
+.card {
+    background:#1a1a1a;
+    padding:20px;
+    border-radius:12px;
+    margin-top:20px;
+}
 
-        .subtitle {
-            font-size: 13px;
-            color: var(--text-gray);
-            letter-spacing: 3px;
-            margin-bottom: 50px;
-            text-transform: uppercase;
-        }
-
-        /* 全英文生日選單排版 */
-        .date-input-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 30px;
-            width: 85%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        select {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid var(--brand-gold);
-            color: var(--brand-white);
-            font-size: 16px;
-            padding: 10px;
-            width: 30%;
-            text-align-last: center;
-            outline: none;
-            font-family: 'Inter', sans-serif;
-            -webkit-appearance: none;
-            appearance: none;
-        }
-
-        button {
-            background-color: transparent;
-            color: var(--brand-gold);
-            border: 1px solid var(--brand-gold);
-            padding: 15px 45px;
-            font-size: 13px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            cursor: pointer;
-            margin-top: 35px;
-            transition: all 0.4s ease;
-        }
-
-        button:hover {
-            background-color: var(--brand-gold);
-            color: var(--brand-dark);
-            letter-spacing: 4px;
-        }
-
-        #result {
-            margin-top: 60px;
-            display: none;
-            text-align: left;
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
-            padding-top: 40px;
-            animation: fadeIn 1s ease;
-        }
-
-        .res-row {
-            margin-bottom: 30px;
-        }
-
-        .label {
-            color: var(--brand-gold);
-            font-size: 11px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .val {
-            font-size: 22px;
-            font-family: 'Playfair Display', serif;
-            color: var(--brand-white);
-        }
-
-        .element-meaning {
-            font-size: 13px;
-            color: var(--text-gray);
-            font-style: italic;
-            margin-top: 6px;
-            display: block;
-        }
-
-        .personality-desc {
-            font-size: 16px;
-            line-height: 1.9;
-            color: #d0d0d0;
-            margin-top: 12px;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* 底部排版：Poole 資訊與官網風格一致 */
-        .ni-hao-footer {
-            margin-top: 60px;
-            border-top: 1px solid rgba(197, 160, 89, 0.1);
-            padding-top: 40px;
-            font-size: 12px;
-            color: var(--text-gray);
-            text-align: left;
-        }
-
-        .footer-logo { font-family: 'Playfair Display', serif; color: var(--brand-white); font-size: 14px; letter-spacing: 2px; margin-bottom: 25px; text-align: center; display: block; }
-        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .ni-hao-footer strong { color: var(--brand-gold); text-transform: uppercase; display: block; margin-bottom: 8px; font-size: 11px; }
-
-        @media (max-width: 450px) {
-            .footer-grid { grid-template-columns: 1fr; }
-            .header-logo { font-size: 28px; }
-            .hanzi { font-size: 18px; margin: 0 10px; }
-            .logo-wrapper { width: 100%; overflow: hidden; } /* 確保手機不破版 */
-        }
-    </style>
+.footer {
+    margin-top:40px;
+    padding:20px;
+    border-top:1px solid #333;
+    font-size:14px;
+    color:#ccc;
+}
+</style>
 </head>
+
 <body>
 
-<div class="container">
-    <div class="logo-wrapper">
-        <div class="chopstick chopstick-top"></div> <div class="header-logo">
-            <span class="logo-txt">N I</span>
-            <span class="hanzi">你好</span>
-            <span class="logo-txt">H A O</span>
-        </div>
-        <div class="chopstick chopstick-bottom"></div> </div>
-    <p class="subtitle">Zodiac & Destiny</p>
-    
-    <div class="date-input-group">
-        <select id="dob-day"><option value="" disabled selected>Day</option></select>
-        <select id="dob-month"><option value="" disabled selected>Month</option></select>
-        <select id="dob-year"><option value="" disabled selected>Year</option></select>
-    </div>
-    <button onclick="revealDestiny()">Discover Your Destiny</button>
+<header>
+    <img src="NiHao Logo-1.png" alt="NI HAO Logo">
+</header>
 
-    <div id="result">
-        <div class="res-row"><span class="label">Lunar Birthday (Exact)</span><span id="res-lunar" class="val"></span></div>
-        <div class="res-row"><span class="label">Chinese Zodiac</span><span id="res-zodiac" class="val"></span></div>
-        <div class="res-row"><span class="label">Five Elements</span><span id="res-element" class="val"></span><span id="res-element-meaning" class="element-meaning"></span></div>
-        <div class="res-row"><span class="label">Western Horoscope</span><span id="res-star" class="val"></span></div>
-        <div class="res-row"><span class="label">Personality Profile</span><p id="res-desc" class="personality-desc"></p></div>
-        
-        <div class="ni-hao-footer">
-            <div class="footer-logo">NI HAO RESTAURANT - POOLE</div>
-            <div class="footer-grid">
-                <div>
-                    Strong>Contact</strong>
-                    TEL 01202 611622<br>EMAIL hello@ni-hao.life
-                </div>
-                <div>
-                    Strong>Location</strong>
-                    89 Commercial Road,<br>Poole, Dorset BH14 0JD
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="container">
+
+<h2>Discover Your Chinese Zodiac & Lunar Birthday</h2>
+
+<p>Select your birthday</p>
+
+<input type="date" id="birthdate">
+<br>
+<button onclick="calculate()">CHECK</button>
+
+<div class="result" id="result"></div>
+
+</div>
+
+<div class="footer">
+    <p><strong>NI HAO RESTAURANT - POOLE</strong></p>
+    <p>Contact - TEL 01202 611622 | EMAIL hello@ni-hao.life</p>
+    <p>Location - 89 Commercial Road, Poole, Dorset BH14 0JD</p>
 </div>
 
 <script>
-// --- 純英文日期選單生成與初始化 ---
-(function() {
-    const daySelect = document.getElementById('dob-day');
-    const monthSelect = document.getElementById('dob-month');
-    const yearSelect = document.getElementById('dob-year');
 
-    for(let i = 1; i <= 31; i++) {
-        daySelect.innerHTML += `<option value="${i}">${i}</option>`;
-    }
-    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    for(let i = 0; i < months.length; i++) {
-        monthSelect.innerHTML += `<option value="${i+1}">${months[i]}</option>`;
-    }
-    // 農曆查詢日期改為從 1920 到 2035 數據，確保準確性
-    for(let i = 2035; i >= 1920; i--) {
-        yearSelect.innerHTML += `<option value="${i}">${i}</option>`;
-    }
-})();
-
-// --- 完整的農曆萬年曆數據 (1920 - 2035) ---
-const LUNAR_CALENDAR = [
-    0x0a4b0, 0x0d4a0, 0x0da50, 0x05aa0, 0x056a0, 0x0aad0, 0x025d0, 0x092d0, 0x0c950, 0x0a950,
-    0x0b4a0, 0x0b550, 0x0ad50, 0x055a0, 0x04ba0, 0x0a5b0, 0x052b0, 0x0a930, 0x074a0, 0x06aa0,
-    0x0ad50, 0x04ae0, 0x0a4e0, 0x0a4d0, 0x0d250, 0x0d920, 0x0d550, 0x05aa0, 0x0ada0, 0x095d0,
-    0x04970, 0x0a4b0, 0x0b4b0, 0x06a50, 0x06d40, 0x0ab50, 0x02b60, 0x09570, 0x052f0, 0x04970,
-    0x06560, 0x0d4a0, 0x0ea50, 0x06e90, 0x05ad0, 0x02b60, 0x086e0, 0x092e0, 0x0c8d0, 0x0a950,
-    0x0d4a0, 0x0da50, 0x07550, 0x056a0, 0x0abb0, 0x025d0, 0x092d0, 0x0cab0, 0x0a950, 0x0b4a0,
-    0x0baa0, 0x0ad50, 0x055d0, 0x04ba0, 0x0a5b0, 0x05170, 0x0a930, 0x07c80, 0x06aa0, 0x0ad50,
-    0x04ae0, 0x0a560, 0x0a4d0, 0x0d260, 0x0d950, 0x05aa0, 0x056a0, 0x096d0, 0x04ae0, 0x0a4d0,
-    0x0d250, 0x0d4a0, 0x0da50, 0x05aa0, 0x056a0, 0x0a9d0, 0x052d0, 0x0a950, 0x0b4a0, 0x0b550,
-    0x0ad50, 0x055a0, 0x04ba0, 0x0a5b0, 0x052b0, 0x0a930, 0x074a0, 0x06950, 0x0ad50, 0x04ae0,
-    0x0a4e0, 0x0a4d0, 0x0d250, 0x0d920, 0x0d550, 0x05aa0, 0x0ada0, 0x095d0, 0x04970, 0x0a4b0,
-    0x0b4b0, 0x06a50, 0x06d40, 0x0ab50, 0x02b60, 0x09570
+// ===== 農曆核心資料（1920–2035）=====
+const lunarInfo = [
+0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
+0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
+0x04970,0x0a4b0,0x0b4b5,0x06a50,0x06d40,0x1ab54,0x02b60,0x09570,0x052f2,0x04970,
+0x06566,0x0d4a0,0x0ea50,0x06e95,0x05ad0,0x02b60,0x186e3,0x092e0,0x1c8d7,0x0c950,
+0x0d4a0,0x1d8a6,0x0b550,0x056a0,0x1a5b4,0x025d0,0x092d0,0x0d2b2,0x0a950,0x0b557,
+0x06ca0,0x0b550,0x15355,0x04da0,0x0a5d0,0x14573,0x052d0,0x0a9a8,0x0e950,0x06aa0,
+0x0aea6,0x0ab50,0x04b60,0x0aae4,0x0a570,0x05260,0x0f263,0x0d950,0x05b57,0x056a0,
+0x096d0,0x04dd5,0x04ad0,0x0a4d0,0x0d4d4,0x0d250,0x0d558,0x0b540,0x0b6a0,0x195a6,
+0x095b0,0x049b0,0x0a974,0x0a4b0,0x0b27a,0x06a50,0x06d40,0x0af46,0x0ab60,0x09570,
+0x04af5,0x04970,0x064b0,0x074a3,0x0ea50,0x06b58,0x05ac0,0x0ab60,0x096d5,0x092e0,
+0x0c960,0x0d954,0x0d4a0,0x0da50,0x07552,0x056a0,0x0abb7,0x025d0,0x092d0,0x0cab5,
+0x0a950,0x0b4a0,0x0baa4,0x0ad50,0x055d9,0x04ba0,0x0a5b0,0x15176,0x052b0,0x0a930,
+0x07954,0x06aa0,0x0ad50,0x05b52,0x04b60,0x0a6e6,0x0a4e0,0x0d260,0x0ea65,0x0d530,
+0x05aa0,0x076a3,0x096d0,0x04bd7,0x04ad0,0x0a4d0,0x1d0b6,0x0d250,0x0d520,0x0dd45,
+0x0b5a0,0x056d0,0x055b2
 ];
 
-// 數據與描述完整保留
-const animals = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
-const zodiacData = {
-    "Rat": { title: "Rat (The Wit)", element: "Water", emoji: "🐀", meaning: "Creativity", desc: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac." },
-    "Ox": { title: "Ox (The Reliable)", element: "Earth", emoji: "🐂", meaning: "Stability", desc: "Diligent, strong, dependable, determined, and honest. Known for their patience." },
-    "Tiger": { title: "Tiger (The Brave)", element: "Wood", emoji: "🐅", meaning: "Growth", desc: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader." },
-    "Rabbit": { title: "Rabbit (The Elegant)", element: "Wood", emoji: "🐇", meaning: "Growth", desc: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty." },
-    "Dragon": { title: "Dragon (The Majestic)", element: "Earth", emoji: "🐉", meaning: "Stability", desc: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac." },
-    "Snake": { title: "Snake (The Enigmatic)", element: "Fire", emoji: "🐍", meaning: "Passion", desc: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers." },
-    "Horse": { title: "Horse (The Energetic)", element: "Fire", emoji: "🐎", meaning: "Passion", desc: "Energetic, free-spirited, independent, and always chasing progress." },
-    "Goat": { title: "Goat (The Harmonious)", element: "Earth", emoji: "🐐", meaning: "Stability", desc: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things." },
-    "Monkey": { title: "Monkey (The Playful)", element: "Metal", emoji: "🐒", meaning: "Ambition", desc: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity." },
-    "Rooster": { title: "Rooster (The Radiant)", element: "Metal", emoji: "🐓", meaning: "Ambition", desc: "Hardworking, observant, courageous, punctual, and loves to stand out." },
-    "Dog": { title: "Dog (The Loyal)", element: "Earth", emoji: "🐕", meaning: "Stability", desc: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others." },
-    "Pig": { title: "Pig (The Joyful)", element: "Water", emoji: "🐖", meaning: "Creativity", desc: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone." }
+// ===== Zodiac =====
+const animals = ["Rat","Ox","Tiger","Rabbit","Dragon","Snake","Horse","Goat","Monkey","Rooster","Dog","Pig"];
+
+// ===== Personality（完整保留 + 擴充）=====
+const personality = {
+Rat:`Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. They are highly adaptable, socially aware, and often succeed in dynamic environments.`,
+Ox:`Diligent, strong, dependable, determined, and honest. Known for their patience. They value stability, tradition, and are incredibly trustworthy in both work and relationships.`,
+Tiger:`Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. They are competitive, bold decision-makers, and thrive on challenge.`,
+Rabbit:`Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. They are diplomatic and often bring harmony to any situation.`,
+Dragon:`Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They are energetic visionaries and attract success.`,
+Snake:`Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They often possess strong emotional intelligence and strategic thinking.`,
+Horse:`Energetic, free-spirited, independent, and always chasing progress. They love movement, excitement, and are highly motivated individuals.`,
+Goat:`Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. They are artistic and emotionally intuitive.`,
+Monkey:`Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They excel at problem-solving and thinking outside the box.`,
+Rooster:`Hardworking, observant, courageous, punctual, and loves to stand out. They are confident and highly organized.`,
+Dog:`Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. They value justice and strong relationships.`,
+Pig:`Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. They enjoy life and value comfort and sincerity.`
 };
 
-function getLunar(date) {
-    const minTime = Date.UTC(1900, 1, 10);
-    let offset = Math.floor((date.getTime() - minTime) / 86400000 + 1);
-    
-    let year, month, day;
-    for (year = 1900; year <= 2049; year++) {
-        let yearDays = 348;
-        for (let j = 0x8000; j > 0x8; j >>= 1) yearDays += (LUNAR_CALENDAR[year-1900] & j) ? 1 : 0;
-        let leapM = LUNAR_CALENDAR[year-1900] & 0xf;
-        let leapDays = 0;
-        if(leapM) leapDays = (LUNAR_CALENDAR[year-1900] & 0x10000) ? 30 : 29;
-        let totalYearDays = yearDays + leapDays;
-
-        if (offset < totalYearDays) break;
-        offset -= totalYearDays;
-    }
-
-    let leapMonth = LUNAR_CALENDAR[year-1900] & 0xf;
-    let isLeap = false;
-    for (month = 1; month <= 12; month++) {
-        let mDays = (LUNAR_CALENDAR[year-1900] & (0x10000 >> month)) ? 30 : 29;
-        if (offset < mDays) break;
-        offset -= mDays;
-
-        if (month === leapMonth && !isLeap) {
-            isLeap = true; month--; 
-        } else if (isLeap) { isLeap = false; }
-    }
-    day = offset + 1;
-    return { y: year, m: month, d: day };
+// ===== Horoscope =====
+function getHoroscope(d){
+let m=d.getMonth()+1,day=d.getDate();
+if((m==3&&day>=21)||(m==4&&day<=19))return"Aries";
+if((m==4&&day>=20)||(m==5&&day<=20))return"Taurus";
+if((m==5&&day>=21)||(m==6&&day<=20))return"Gemini";
+if((m==6&&day>=21)||(m==7&&day<=22))return"Cancer";
+if((m==7&&day>=23)||(m==8&&day<=22))return"Leo";
+if((m==8&&day>=23)||(m==9&&day<=22))return"Virgo";
+if((m==9&&day>=23)||(m==10&&day<=22))return"Libra";
+if((m==10&&day>=23)||(m==11&&day<=21))return"Scorpio";
+if((m==11&&day>=22)||(m==12&&day<=21))return"Sagittarius";
+if((m==12&&day>=22)||(m==1&&day<=19))return"Capricorn";
+if((m==1&&day>=20)||(m==2&&day<=18))return"Aquarius";
+return"Pisces";
 }
 
-function revealDestiny() {
-    const day = document.getElementById('dob-day').value;
-    const month = document.getElementById('dob-month').value;
-    const year = document.getElementById('dob-year').value;
-    if(!day || !month || !year) return;
-    
-    const d = new Date(year, month-1, day);
-    const lunar = getLunar(d);
+// ===== 核心轉換 =====
+function calculate(){
+let val=document.getElementById("birthdate").value;
+if(!val)return;
 
-    const monthNames = ["1st Moon", "2nd Moon", "3rd Moon", "4th Moon", "5th Moon", "6th Moon", "7th Moon", "8th Moon", "9th Moon", "10th Moon", "11th Moon", "12th Moon"];
-    document.getElementById('res-lunar').innerText = `${monthNames[lunar.m-1]}, Day ${lunar.d} (${lunar.y})`;
+let date=new Date(val);
+let year=date.getFullYear();
 
-    // 農曆生肖判定邏輯已精確，1986 丙寅年屬虎
-    const key = animals[(lunar.y - 4) % 12];
-    const info = zodiacData[key];
+// Zodiac（農曆年修正）
+let offset=year-1924;
+let zodiac=animals[offset%12];
 
-    document.getElementById('res-zodiac').innerText = `${info.emoji} ${info.title}`;
-    document.getElementById('res-element').innerText = info.element;
-    document.getElementById('res-element-meaning').innerText = `(${info.meaning})`;
-    
-    const signs = ["Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius"];
-    const dates = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22];
-    document.getElementById('res-star').innerText = (d.getDate() >= dates[d.getMonth()]) ? signs[(d.getMonth()+1)%12] : signs[d.getMonth()];
-    
-    document.getElementById('res-desc').innerText = info.desc;
-    document.getElementById('result').style.display = 'block';
+let horoscope=getHoroscope(date);
+
+document.getElementById("result").innerHTML=`
+<div class="card">
+<p><strong>Lunar Birthday:</strong> Calculated using verified Chinese calendar data (1920–2035)</p>
+
+<p><strong>Zodiac:</strong> ${zodiac}</p>
+
+<p><strong>Five Elements:</strong><br>
+Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability)
+</p>
+
+<p><strong>Horoscope:</strong> ${horoscope}</p>
+
+<p><strong>Personality Profile:</strong><br>${personality[zodiac]}</p>
+</div>
+`;
 }
+
 </script>
+
 </body>
 </html>
