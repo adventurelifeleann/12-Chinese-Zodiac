@@ -6,64 +6,68 @@
     <title>Ni Hao | Zodiac Discovery</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #c5a059; --bg: #111111; --text: #ffffff; --gray: #888888; --hanzi: #4d4d4d; }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; -webkit-font-smoothing: antialiased; }
-        .wrapper { max-width: 500px; margin: 40px auto; border: 1px solid rgba(197, 160, 89, 0.3); padding: 40px 20px; text-align: center; }
+        :root { --gold: #c5a059; --bg: #111111; --text: #ffffff; --gray: #888888; --hanzi: #ffffff; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; }
+        .wrapper { max-width: 500px; margin: 40px auto; border: 1px solid rgba(197, 160, 89, 0.3); padding: 50px 20px; text-align: center; }
 
-        /* Logo 修正：確保手機端不拆行 */
-        .logo-container { display: flex; justify-content: center; align-items: center; white-space: nowrap; margin-bottom: 10px; }
-        .logo-word { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--gold); letter-spacing: 4px; display: inline-block; }
-        .logo-divider { width: 1.5px; height: 30px; background-color: var(--gold); margin: 0 15px; }
-        .logo-hanzi { font-size: 20px; color: var(--hanzi); font-family: serif; }
-        .tagline { font-size: 12px; color: var(--gray); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 40px; }
+        /* LOGO 修正：筷子設計 */
+        .logo-wrap { display: flex; justify-content: center; align-items: center; white-space: nowrap; margin-bottom: 5px; }
+        .logo-txt { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--gold); letter-spacing: 5px; }
+        .chopsticks-box { display: flex; flex-direction: column; align-items: center; margin: 0 15px; position: relative; }
+        .chopstick { width: 45px; height: 1.5px; background-color: var(--gold); }
+        .hanzi-main { font-size: 20px; color: var(--text); margin: 5px 0; font-family: serif; font-weight: bold; }
+        
+        .tagline { font-size: 11px; color: var(--gray); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 50px; }
 
         /* 全英文選單 */
-        .input-box { display: flex; justify-content: center; gap: 8px; margin-bottom: 30px; }
-        select { background: transparent; border: none; border-bottom: 1px solid var(--gold); color: #fff; padding: 8px; font-size: 16px; outline: none; flex: 1; -webkit-appearance: none; text-align: center; }
+        .input-box { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; }
+        select { background: transparent; border: none; border-bottom: 1px solid var(--gold); color: #fff; padding: 10px; font-size: 16px; outline: none; flex: 1; -webkit-appearance: none; text-align: center; border-radius: 0; }
 
-        button { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 15px 40px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; margin-top: 20px; }
+        button { background: transparent; border: 1px solid var(--gold); color: var(--gold); padding: 16px 45px; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: 0.4s; margin-top: 20px; font-size: 12px; }
         button:hover { background: var(--gold); color: #000; }
 
-        #result { display: none; margin-top: 50px; text-align: left; border-top: 1px solid rgba(197, 160, 89, 0.2); padding-top: 30px; }
-        .res-item { margin-bottom: 25px; }
-        .res-label { color: var(--gold); font-size: 11px; letter-spacing: 1px; text-transform: uppercase; display: block; margin-bottom: 5px; }
-        .res-val { font-family: 'Playfair Display', serif; font-size: 22px; }
-        .res-desc { font-size: 15px; color: #ccc; line-height: 1.8; margin-top: 10px; }
+        #result { display: none; margin-top: 60px; text-align: left; border-top: 1px solid rgba(197, 160, 89, 0.2); padding-top: 40px; animation: fadeIn 0.8s ease; }
+        .res-item { margin-bottom: 30px; }
+        .res-label { color: var(--gold); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; display: block; margin-bottom: 8px; }
+        .res-val { font-family: 'Playfair Display', serif; font-size: 24px; color: #fff; }
+        .res-desc { font-size: 15px; color: #d0d0d0; line-height: 1.9; margin-top: 12px; }
 
-        /* 底部資訊排版 */
-        .footer { margin-top: 50px; border-top: 1px solid rgba(197, 160, 89, 0.1); padding-top: 30px; display: flex; justify-content: space-between; text-align: left; font-size: 11px; color: var(--gray); line-height: 1.6; }
-        .footer strong { color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 5px; }
-        @media (max-width: 400px) { .footer { flex-direction: column; gap: 20px; } }
+        .footer { margin-top: 60px; border-top: 1px solid rgba(197, 160, 89, 0.1); padding-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; font-size: 11px; color: var(--gray); }
+        .footer strong { color: var(--gold); text-transform: uppercase; display: block; margin-bottom: 8px; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 450px) { .footer { grid-template-columns: 1fr; } .logo-txt { font-size: 28px; } .hanzi-main { font-size: 16px; } }
     </style>
 </head>
 <body>
 
 <div class="wrapper">
-    <div class="logo-container">
-        <div class="logo-word">NI</div>
-        <div class="logo-divider"></div>
-        <div class="logo-hanzi">你好</div>
-        <div class="logo-divider"></div>
-        <div class="logo-word">HAO</div>
+    <div class="logo-wrap">
+        <div class="logo-txt">NI</div>
+        <div class="chopsticks-box">
+            <div class="chopstick"></div>
+            <div class="hanzi-main">你好</div>
+            <div class="chopstick"></div>
+        </div>
+        <div class="logo-txt">HAO</div>
     </div>
-    <div class="tagline">Zodiac & Destiny</div>
+    <div class="tagline">Chinese Zodiac Discovery</div>
 
     <div class="input-box">
         <select id="day"><option value="" disabled selected>Day</option></select>
         <select id="month"><option value="" disabled selected>Month</option></select>
         <select id="year"><option value="" disabled selected>Year</option></select>
     </div>
-    <button onclick="calculate()">Discover</button>
+    <button onclick="calculate()">Discover Your Destiny</button>
 
     <div id="result">
-        <div class="res-item"><span class="res-label">Lunar Birthday</span><span id="l-date" class="res-val"></span></div>
+        <div class="res-item"><span class="res-label">Lunar Birthday (Exact)</span><span id="l-date" class="res-val"></span></div>
         <div class="res-item"><span class="res-label">Chinese Zodiac</span><span id="l-zodiac" class="res-val"></span></div>
         <div class="res-item"><span class="res-label">Five Elements</span><span id="l-element" class="res-val"></span></div>
         <div class="res-item"><span class="res-label">Personality Profile</span><p id="l-desc" class="res-desc"></p></div>
 
         <div class="footer">
-            <div><strong>Location</strong>89 Commercial Road,<br>Poole, Dorset BH14 0JD</div>
-            <div><strong>Contact</strong>TEL 01202 611622<br>hello@ni-hao.life</div>
+            <div><strong>Location</strong>89 Commercial Road, Poole,<br>Dorset BH14 0JD</div>
+            <div><strong>Contact</strong>TEL 01202 611622<br>EMAIL hello@ni-hao.life</div>
         </div>
     </div>
 </div>
@@ -76,7 +80,7 @@ for(let i=1; i<=31; i++) dSel.options.add(new Option(i, i));
 months.forEach((m, i) => mSel.options.add(new Option(m, i+1)));
 for(let i=2030; i>=1930; i--) ySel.options.add(new Option(i, i));
 
-// 1930-2030 農曆數據庫 (核心算法優化)
+// 1930-2030 精確農曆數據表
 const LUNAR_TABLE = [
     0x04bd8,0x04ae0,0x0a570,0x054d5,0x0d260,0x0d950,0x16554,0x056a0,0x09ad0,0x055d2,
     0x04ae0,0x0a5b6,0x0a4d0,0x0d250,0x1d255,0x0b540,0x0d6a0,0x0ada2,0x095b0,0x14977,
@@ -91,6 +95,7 @@ const LUNAR_TABLE = [
 ];
 
 const zodiacs = ["Rat","Ox","Tiger","Rabbit","Dragon","Snake","Horse","Goat","Monkey","Rooster","Dog","Pig"];
+const elements = ["Metal","Metal","Water","Water","Wood","Wood","Fire","Fire","Earth","Earth"];
 const profiles = {
     "Rat": { e: "Water", d: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac." },
     "Ox": { e: "Earth", d: "Diligent, strong, dependable, determined, and honest. Known for their patience." },
@@ -107,29 +112,39 @@ const profiles = {
 };
 
 function calculate() {
-    const y = parseInt(ySel.value), m = parseInt(mSel.value), d = parseInt(dSel.value);
-    if(!y || !m || !d) return;
+    const yInput = parseInt(ySel.value), mInput = parseInt(mSel.value), dInput = parseInt(dSel.value);
+    if(!yInput || !mInput || !dInput) return;
 
-    const date = new Date(y, m-1, d);
-    const offset = Math.floor((date - new Date(1900,0,31))/86400000);
+    const selectedDate = new Date(yInput, mInput-1, dInput);
+    const offset = Math.floor((selectedDate - new Date(1900,0,31))/86400000);
     
-    let temp = offset, i, yearDays;
+    let temp = offset, i, yDays;
     for(i=1900; i<2050 && temp>0; i++) {
-        yearDays = 348;
-        for(let j=0x8000; j>0x8; j>>=1) yearDays += (LUNAR_TABLE[i-1900] & j) ? 1 : 0;
-        let leap = LUNAR_TABLE[i-1900] & 0xf;
-        if(leap) yearDays += (LUNAR_TABLE[i-1900] & 0x10000) ? 30 : 29;
-        if(temp < yearDays) break;
-        temp -= yearDays;
+        yDays = 348;
+        for(let j=0x8000; j>0x8; j>>=1) yDays += (LUNAR_TABLE[i-1900] & j) ? 1 : 0;
+        let leapM = LUNAR_TABLE[i-1900] & 0xf;
+        if(leapM) yDays += (LUNAR_TABLE[i-1900] & 0x10000) ? 30 : 29;
+        if(temp < yDays) break;
+        temp -= yDays;
     }
 
     const lunarYear = i;
-    const zIdx = (lunarYear - 4) % 12;
-    const zName = zodiacs[zIdx];
-    const info = profiles[zName];
+    // 生肖邏輯：農曆 1986 年為丙寅年 (虎)
+    const zodiacIndex = (lunarYear - 4) % 12;
+    const zodiacName = zodiacs[zodiacIndex];
+    const info = profiles[zodiacName];
 
-    document.getElementById('l-date').innerText = `Moon Cycle Year ${lunarYear}`;
-    document.getElementById('l-zodiac').innerText = zName;
+    // 農曆日期解析
+    let leapMonth = LUNAR_TABLE[i-1900] & 0xf, isLeap = false, monthDays = 0, m;
+    for(m=1; m<=12; m++) {
+        monthDays = (LUNAR_TABLE[i-1900] & (0x10000 >> m)) ? 30 : 29;
+        if(temp < monthDays) break;
+        temp -= monthDays;
+        if(m === leapMonth && !isLeap) { isLeap = true; m--; } else if(isLeap) isLeap = false;
+    }
+
+    document.getElementById('l-date').innerText = `${months[m-1]} ${temp+1}, ${lunarYear}`;
+    document.getElementById('l-zodiac').innerText = zodiacName;
     document.getElementById('l-element').innerText = info.e;
     document.getElementById('l-desc').innerText = info.d;
     document.getElementById('result').style.display = 'block';
