@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary-gold: #b59b58;
-            --bright-gold: #d4bc7d; /* 提升亮度的金 */
+            --bright-gold: #d4bc7d;
             --dark-green: #111d1a;
             --dark-box: #0a1311;
             --text-light: #e0e0e0;
@@ -28,7 +28,7 @@
         }
 
         header {
-            padding: 50px 10px;
+            padding: 40px 10px;
             text-align: center;
             width: 100%;
         }
@@ -42,30 +42,27 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            letter-spacing: 10px;
+            font-size: 2rem;
+            letter-spacing: 8px;
             color: var(--primary-gold);
             margin: 0;
         }
 
-        .logo-cn {
-            font-size: 1.2rem;
-            color: #5b6e6a;
-        }
+        .logo-cn { font-size: 1.1rem; color: #5b6e6a; }
 
         .container {
             width: 90%;
             max-width: 600px;
             background: var(--dark-box);
-            padding: 50px 30px;
+            padding: 40px 20px;
             border-radius: 4px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            margin-bottom: 80px;
+            margin-bottom: 60px;
             border: 1px solid var(--border-color);
             text-align: center;
             box-sizing: border-box;
@@ -75,9 +72,9 @@
             font-family: 'Cinzel', serif;
             color: var(--primary-gold);
             text-align: center;
-            font-size: 1.7rem;
-            margin-bottom: 45px;
-            line-height: 2.5; 
+            font-size: 1.6rem;
+            margin-bottom: 40px;
+            line-height: 2.2; 
         }
         
         .main-title span { display: block; }
@@ -85,9 +82,16 @@
         label {
             display: block;
             margin-bottom: 20px;
-            font-size: 1rem;
-            letter-spacing: 1px;
+            font-size: 0.95rem;
             color: #aaa;
+        }
+
+        /* 修正日期輸入框 (問題2) */
+        .input-group {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         input[type="date"] {
@@ -95,48 +99,47 @@
             border: 1px solid var(--border-color);
             color: white;
             padding: 15px;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             width: 100%;
-            max-width: 320px;
+            max-width: 340px; /* 增加寬度防止換行 */
             text-align: center;
             box-sizing: border-box;
             border-radius: 0;
             font-family: 'Montserrat', sans-serif;
             position: relative;
+            white-space: nowrap; /* 強制不換行 */
         }
 
-        /* 日期提示 */
         input[type="date"]:invalid:before {
             content: "yyyy / mm / dd";
-            color: #555;
+            color: #666;
             position: absolute;
             left: 50%;
             transform: translateX(-50%);
+            width: 100%;
         }
 
         .reveal-btn {
             background: var(--primary-gold);
             color: var(--dark-green);
             border: none;
-            padding: 18px;
+            padding: 16px;
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             font-size: 1.1rem;
             cursor: pointer;
             width: 100%;
-            max-width: 320px;
-            margin-top: 30px;
-            transition: 0.3s;
+            max-width: 340px;
+            margin-top: 25px;
         }
 
-        .reveal-btn:hover { background: var(--bright-gold); }
-
+        /* 修正圖片顯示 (問題1) */
         #result {
             display: none;
-            margin-top: 50px;
+            margin-top: 40px;
             border-top: 1px solid var(--border-color);
-            padding-top: 50px;
+            padding-top: 40px;
             text-align: left;
             animation: fadeIn 0.8s ease;
         }
@@ -144,28 +147,31 @@
         .zodiac-img-box {
             text-align: center;
             margin-bottom: 40px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 提升圖標視覺效果 */
-        .zodiac-svg {
-            width: 140px;
+        .zodiac-img {
             height: 140px;
-            fill: var(--bright-gold);
-            filter: drop-shadow(0 0 12px rgba(212, 188, 125, 0.5));
+            width: auto;
+            /* 使用濾鏡將普通圖片轉為金箔色，搭配品牌風格 */
+            filter: sepia(1) saturate(2) hue-rotate(-5deg) brightness(0.9) contrast(1.2) drop-shadow(0 0 10px rgba(181, 155, 88, 0.4));
         }
 
-        .result-item { margin-bottom: 30px; }
+        .result-item { margin-bottom: 25px; }
 
         .label-gold {
             color: var(--primary-gold);
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            font-size: 1rem;
+            font-size: 0.95rem;
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .value-text { font-size: 1.3rem; font-weight: 400; color: #fff; }
+        .value-text { font-size: 1.25rem; color: #fff; }
 
         .element-desc {
             font-size: 0.85rem;
@@ -176,51 +182,39 @@
 
         .profile-box {
             background: rgba(181, 155, 88, 0.06);
-            padding: 30px;
+            padding: 25px;
             border-left: 4px solid var(--primary-gold);
-            margin-top: 40px;
-            line-height: 1.9;
-            font-size: 1.1rem;
+            margin-top: 35px;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
         footer {
             width: 100%;
-            padding: 80px 20px;
+            padding: 60px 20px;
             background: #080f0e;
             text-align: center;
             border-top: 1px solid var(--border-color);
             box-sizing: border-box;
         }
 
-        .footer-title { 
-            color: var(--primary-gold); 
-            font-family: 'Cinzel', serif; 
-            margin-bottom: 40px; 
-            font-size: 1.2rem;
-        }
-
+        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; }
+        
         .footer-grid {
             max-width: 800px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
+            gap: 30px;
         }
 
-        .footer-col b {
-            color: var(--primary-gold);
-            display: block;
-            margin-bottom: 15px;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 2px;
-        }
-
-        .footer-col p { color: #aaa; line-height: 2; margin: 0; font-size: 0.95rem; }
+        .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
+        .footer-col p { color: #aaa; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
             .footer-grid { grid-template-columns: 1fr; }
-            h1.main-title { font-size: 1.4rem; }
-            .logo-text { font-size: 1.8rem; letter-spacing: 6px; }
+            input[type="date"] { max-width: 280px; font-size: 1rem; }
+            .reveal-btn { max-width: 280px; }
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -249,7 +243,7 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-img-box" id="zodiacIcon"></div>
+            <div class="zodiac-img-box" id="zodiacImg"></div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -298,23 +292,20 @@
     </footer>
 
     <script>
-        // 修正後的精緻圖標數據 (亮金色)
-        const getSVG = (sign) => {
-            const icons = {
-                Rat: `<svg class='zodiac-svg' viewBox='0 0 64 64'><circle cx='32' cy='38' r='20'/><path d='M18,22c0-4,4-8,8-8s8,4,8,8'/><path d='M30,22c0-4,4-8,8-8s8,4,8,8'/><circle cx='25' cy='35' r='2' fill='#000'/><circle cx='39' cy='35' r='2' fill='#000'/></svg>`,
-                Ox: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M12,20c0,0,5,10,20,10s20-10,20-10v20H12V20z'/><path d='M12,20c0-5,4-10,10-10'/><path d='M52,20c0-5-4-10-10-10'/></svg>`,
-                Tiger: `<svg class='zodiac-svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='24'/><path d='M20,20l6,6M44,20l-6,6M24,44s4,4,8,4,8-4,8-4'/><path d='M32,16v8M28,18l2,2M36,18l-2,2' stroke='#000' stroke-width='2'/></svg>`,
-                Rabbit: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M24,30c0-10,4-20,4-20s4,10,4,20'/><path d='M32,30c0-10,4-20,4-20s4,10,4,20'/><circle cx='32' cy='42' r='18'/></svg>`,
-                Dragon: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M32,8c-12,0-20,8-20,20s8,15,20,15,20-3,20-15S44,8,32,8z'/><path d='M15,45l-5,10M49,45l5,10'/></svg>`,
-                Snake: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M32,10c-10,0-18,6-18,14s8,12,18,12,18,6,18,14-8,14-18,14'/></svg>`,
-                Horse: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M16,52V20c0-8,8-12,16-12h12v12c0,8-8,12-16,12H16'/></svg>`,
-                Goat: `<svg class='zodiac-svg' viewBox='0 0 64 64'><circle cx='32' cy='35' r='18'/><path d='M20,15c0,0,0,10,5,10M44,15c0,0,0,10-5,10'/></svg>`,
-                Monkey: `<svg class='zodiac-svg' viewBox='0 0 64 64'><circle cx='32' cy='35' r='20'/><circle cx='32' cy='32' r='12' fill='none' stroke='black'/><circle cx='20,35' r='5'/><circle cx='44,35' r='5'/></svg>`,
-                Rooster: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M32,10l-15,40h30z'/><circle cx='32' cy='25' r='5'/></svg>`,
-                Dog: `<svg class='zodiac-svg' viewBox='0 0 64 64'><path d='M20,20v20c0,10,12,15,12,15s12-5,12-15V20H20z'/><path d='M20,20c-5,0-8,5-8,10M44,20c5,0,8,5,8,10'/></svg>`,
-                Pig: `<svg class='zodiac-svg' viewBox='0 0 64 64'><circle cx='32' cy='35' r='22'/><ellipse cx='32' cy='38' rx='8' ry='5' fill='none' stroke='black'/></svg>`
-            };
-            return icons[sign] || '';
+        // 改用穩定圖片來源並搭配 CSS 金色濾鏡
+        const imgMap = {
+            Rat: "https://img.icons8.com/ios-filled/200/b59b58/mouse.png",
+            Ox: "https://img.icons8.com/ios-filled/200/b59b58/bull.png",
+            Tiger: "https://img.icons8.com/ios-filled/200/b59b58/tiger.png",
+            Rabbit: "https://img.icons8.com/ios-filled/200/b59b58/rabbit.png",
+            Dragon: "https://img.icons8.com/ios-filled/200/b59b58/dragon.png",
+            Snake: "https://img.icons8.com/ios-filled/200/b59b58/snake.png",
+            Horse: "https://img.icons8.com/ios-filled/200/b59b58/horse.png",
+            Goat: "https://img.icons8.com/ios-filled/200/b59b58/sheep.png",
+            Monkey: "https://img.icons8.com/ios-filled/200/b59b58/monkey.png",
+            Rooster: "https://img.icons8.com/ios-filled/200/b59b58/rooster.png",
+            Dog: "https://img.icons8.com/ios-filled/200/b59b58/dog.png",
+            Pig: "https://img.icons8.com/ios-filled/200/b59b58/pig.png"
         };
 
         const profiles = {
@@ -355,7 +346,7 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('zodiacIcon').innerHTML = getSVG(sign);
+            document.getElementById('zodiacImg').innerHTML = `<img src="${imgMap[sign]}" class="zodiac-img" alt="${sign}">`;
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resHoro').innerText = getHoro(m, d);
