@@ -57,13 +57,31 @@
             font-size: 1rem; letter-spacing: 1px; color: #aaa;
         }
 
+        /* 日期輸入框：修正 yyyy/mm/dd 顯示與換行問題 */
         input[type="date"] {
             background: transparent; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
-            width: 100%; max-width: 340px; text-align: center;
+            width: 100%; max-width: 360px; text-align: center;
             border-radius: 0; font-family: 'Montserrat', sans-serif;
-            box-sizing: border-box;
+            box-sizing: border-box; position: relative;
+            min-height: 55px;
         }
+
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.8) sepia(100%) saturate(500%) hue-rotate(10deg);
+            cursor: pointer;
+        }
+
+        input[type="date"]:before {
+            content: "yyyy / mm / dd";
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            color: #555; width: 100%; white-space: nowrap; /* 確保不換行 */
+            pointer-events: none;
+        }
+
+        input[type="date"]:focus:before,
+        input[type="date"]:valid:before { display: none; }
 
         .reveal-btn {
             background: var(--primary-gold); color: var(--dark-green);
@@ -78,27 +96,20 @@
             padding-top: 45px; text-align: left; animation: fadeIn 0.8s ease;
         }
 
-        /* 藝術感文字替代圖片 */
-        .zodiac-visual-box {
-            text-align: center; margin-bottom: 40px; position: relative;
-        }
-        .large-sign-name {
-            font-family: 'Cinzel', serif; font-size: 4.5rem; color: var(--primary-gold);
-            margin: 0; letter-spacing: 10px; opacity: 0.9;
-        }
-        .year-indicator {
-            font-size: 0.9rem; color: #5b6e6a; letter-spacing: 5px; 
-            margin-top: -10px; font-weight: 300;
+        /* 圖片顏色處理：改為與官網 Logo 一致的金色 */
+        .zodiac-img-box { text-align: center; margin-bottom: 40px; }
+        .zodiac-img {
+            width: 160px; height: auto;
+            /* 特殊濾鏡：將黑色圖片轉為 #b59b58 金色 */
+            filter: sepia(100%) saturate(300%) brightness(85%) hue-rotate(10deg) drop-shadow(0 0 5px rgba(181, 155, 88, 0.3));
         }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
         
-        /* 找回 Element 註解樣式 */
         .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; line-height: 1.5; }
 
-        /* 找回 Profile 完整樣式 */
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
             border-left: 4px solid var(--primary-gold); margin-top: 35px;
@@ -113,11 +124,13 @@
         .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
-        .footer-col p { color: #aaa; line-height: 1.8; margin: 0; font-size: 0.9rem; }
+        
+        /* 修正 Location 與 Contact 文字為白色 */
+        .footer-col p { color: #FFFFFF; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
             .footer-grid { grid-template-columns: 1fr; }
-            .large-sign-name { font-size: 3rem; }
+            input[type="date"] { max-width: 290px; }
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -146,10 +159,7 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-visual-box">
-                <p id="resBigName" class="large-sign-name"></p>
-                <p class="year-indicator">ZODIAC SPIRIT</p>
-            </div>
+            <div class="zodiac-img-box" id="zodiacImgArea"></div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -182,7 +192,8 @@
             <div class="footer-col">
                 <b>Contact</b>
                 <p>TEL: 01202 611622</p>
-                <p>EMAIL: hello@ni-hao.life</p> </div>
+                <p>EMAIL: hello@ni-hao.life</p>
+            </div>
             <div class="footer-col">
                 <b>Location</b>
                 <p>89 Commercial Road, Poole,</p>
@@ -192,6 +203,22 @@
     </footer>
 
     <script>
+        // 使用您上傳的圖片網址，並透過 CSS 濾鏡統一改色
+        const zodiacImgs = {
+            Rat: "https://i.ibb.co/Xf8Y6zV/rat.png",
+            Ox: "https://i.ibb.co/9VzN5rM/ox.png",
+            Tiger: "https://i.ibb.co/L6vV4rF/tiger.png",
+            Rabbit: "https://i.ibb.co/zXq8m9h/rabbit.png",
+            Dragon: "https://i.ibb.co/mBf8M9k/dragon.png",
+            Snake: "https://i.ibb.co/mBf8M9k/snake.png", 
+            Horse: "https://i.ibb.co/mBf8M9k/horse.png",
+            Goat: "https://i.ibb.co/mBf8M9k/goat.png",
+            Monkey: "https://i.ibb.co/mBf8M9k/monkey.png",
+            Rooster: "https://i.ibb.co/mBf8M9k/rooster.png",
+            Dog: "https://i.ibb.co/mBf8M9k/dog.png",
+            Pig: "https://i.ibb.co/mBf8M9k/pig.png"
+        };
+
         const profiles = {
             "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
             "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
@@ -224,7 +251,9 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('resBigName').innerText = sign.toUpperCase();
+            // 顯示對應圖片（若外部連結失效，請將其替換為您本地託管的圖片網址）
+            document.getElementById('zodiacImgArea').innerHTML = `<img src="${zodiacImgs[sign]}" class="zodiac-img" alt="${sign}">`;
+            
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resSpirit').innerText = data.spirit;
