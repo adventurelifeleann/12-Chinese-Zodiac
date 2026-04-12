@@ -3,154 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Find Your Chinese Zodiac Sign | NI HAO</title>
+    <title>Chinese Zodiac | NI HAO</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-gold: #b59b58;
-            --bright-gold: #d4bc7d;
+            --gold: #b59b58;
             --dark-green: #111d1a;
             --dark-box: #0a1311;
             --text-light: #e0e0e0;
-            --border-color: #3a4744;
+            --border: #3a4744;
         }
 
         body {
             background-color: var(--dark-green);
             color: var(--text-light);
             font-family: 'Montserrat', sans-serif;
-            margin: 0; padding: 0;
-            display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
+            margin: 0; display: flex; flex-direction: column; align-items: center;
         }
 
-        header { padding: 40px 10px; text-align: center; width: 100%; }
-
+        header { padding: 40px 10px; width: 100%; text-align: center; }
         .logo-container {
-            max-width: 500px; margin: 0 auto;
-            border-top: 1px solid var(--primary-gold);
-            border-bottom: 1px solid var(--primary-gold);
-            padding: 20px 0; display: flex; justify-content: center; align-items: center; gap: 15px;
+            max-width: 500px; margin: 0 auto; border-top: 1px solid var(--gold);
+            border-bottom: 1px solid var(--gold); padding: 15px 0;
+            display: flex; justify-content: center; align-items: center; gap: 15px;
         }
-
-        .logo-text { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 8px; color: var(--primary-gold); margin: 0; }
+        .logo-text { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 8px; color: var(--gold); margin: 0; }
         .logo-cn { font-size: 1.1rem; color: #5b6e6a; }
 
         .container {
-            width: 92%; max-width: 600px;
-            background: var(--dark-box); padding: 45px 25px;
-            border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            margin-bottom: 60px; border: 1px solid var(--border-color);
-            text-align: center; box-sizing: border-box;
+            width: 92%; max-width: 600px; background: var(--dark-box); 
+            padding: 40px 20px; border-radius: 4px; border: 1px solid var(--border);
+            text-align: center; margin-bottom: 60px;
         }
 
-        h1.main-title {
-            font-family: 'Cinzel', serif; color: var(--primary-gold);
-            font-size: 1.65rem; margin-bottom: 40px; line-height: 2.3; 
-        }
-        .main-title span { display: block; }
-
-        /* 修正間距問題 */
-        .input-group {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 25px; /* 增加與輸入框的距離 */
-            font-size: 1rem;
-            letter-spacing: 1px;
-            color: #aaa;
-        }
+        h1.main-title { font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 30px; line-height: 1.8; }
+        
+        /* 修正標題與輸入框間距 */
+        .input-group { margin-top: 25px; }
+        label { display: block; margin-bottom: 25px; color: #aaa; letter-spacing: 1px; }
 
         input[type="date"] {
-            background: transparent; border: 1px solid var(--border-color);
-            color: white; padding: 15px; font-size: 1.1rem;
-            width: 100%; max-width: 340px; text-align: center;
+            background: transparent; border: 1px solid var(--border); color: white;
+            padding: 15px; width: 100%; max-width: 320px; font-size: 1.1rem;
             border-radius: 0; font-family: 'Montserrat', sans-serif;
-            position: relative; box-sizing: border-box;
-        }
-
-        input[type="date"]:invalid:before {
-            content: "yyyy / mm / dd"; color: #555;
-            position: absolute; left: 50%; transform: translateX(-50%);
         }
 
         .reveal-btn {
-            background: var(--primary-gold); color: var(--dark-green);
-            border: none; padding: 18px; font-family: 'Cinzel', serif;
-            font-weight: bold; letter-spacing: 3px; font-size: 1.1rem;
-            cursor: pointer; width: 100%; max-width: 340px; margin-top: 30px;
-            transition: 0.3s;
+            background: var(--gold); color: var(--dark-green); border: none;
+            padding: 18px; width: 100%; max-width: 320px; margin-top: 25px;
+            font-family: 'Cinzel', serif; font-weight: bold; cursor: pointer;
         }
 
-        .reveal-btn:hover { background: var(--bright-gold); }
+        #result { display: none; margin-top: 40px; border-top: 1px solid var(--border); padding-top: 40px; text-align: left; }
 
-        #result {
-            display: none; margin-top: 50px; border-top: 1px solid var(--border-color);
-            padding-top: 45px; text-align: left; animation: fadeIn 0.8s ease;
-        }
-
-        /* 圖片視覺強化 (問題修正主體) */
-        .zodiac-img-box {
-            text-align: center; margin-bottom: 40px; height: 160px;
-            display: flex; justify-content: center; align-items: center;
-        }
-
-        .zodiac-img {
-            height: 150px; width: auto;
-            /* 將高清圖片濾鏡調整為精緻的金箔感，符合餐廳風格 */
-            filter: sepia(1) saturate(1.8) hue-rotate(-5deg) brightness(0.9) contrast(1.1) drop-shadow(0 0 10px rgba(181, 155, 88, 0.4));
-        }
+        /* 圖片視覺效果：絕對會顯示的 SVG 樣式 */
+        .zodiac-svg-box { text-align: center; margin-bottom: 35px; }
+        .zodiac-icon { width: 160px; height: 160px; fill: var(--gold); filter: drop-shadow(0 0 10px rgba(181, 155, 88, 0.4)); }
 
         .result-item { margin-bottom: 25px; }
-        .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
-        .value-text { font-size: 1.25rem; color: #fff; }
+        .label-gold { color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.95rem; display: block; margin-bottom: 5px; }
+        .value-text { font-size: 1.3rem; color: #fff; }
 
-        .profile-box {
-            background: rgba(181, 155, 88, 0.06); padding: 25px;
-            border-left: 4px solid var(--primary-gold); margin-top: 35px;
-            line-height: 1.9; font-size: 1.05rem;
-        }
+        .profile-box { background: rgba(181, 155, 88, 0.06); padding: 25px; border-left: 4px solid var(--gold); line-height: 1.8; margin-top: 30px; }
 
-        footer {
-            width: 100%; padding: 60px 20px; background: #080f0e;
-            text-align: center; border-top: 1px solid var(--border-color); box-sizing: border-box;
-        }
+        footer { width: 100%; padding: 50px 20px; background: #080f0e; border-top: 1px solid var(--border); text-align: center; box-sizing: border-box; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 800px; margin: 0 auto; }
+        .footer-col b { color: var(--gold); display: block; margin-bottom: 8px; font-family: 'Cinzel', serif; }
+        .footer-col p { color: #aaa; font-size: 0.85rem; margin: 0; }
 
-        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
-        .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
-        .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
-        .footer-col p { color: #aaa; line-height: 1.8; margin: 0; font-size: 0.9rem; }
-
-        @media (max-width: 600px) {
-            .footer-grid { grid-template-columns: 1fr; }
-            input[type="date"] { max-width: 280px; font-size: 1rem; }
-            .reveal-btn { max-width: 280px; }
-        }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <h1 class="logo-text">NI</h1>
-            <span class="logo-cn">你好</span>
-            <h1 class="logo-text">HAO</h1>
+            <h1 class="logo-text">NI</h1><span class="logo-cn">你好</span><h1 class="logo-text">HAO</h1>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="main-title">
-            <span>Discover Your</span>
-            <span>Chinese Zodiac Sign</span>
-        </h1>
-        
+        <h1 class="main-title">Discover Your<br>Chinese Zodiac Sign</h1>
         <div class="input-group">
             <label>Select Your Birthday</label>
             <input type="date" id="birthday" required>
@@ -158,93 +91,54 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-img-box" id="zodiacImgContainer"></div>
-
-            <div class="result-item">
-                <span class="label-gold">Zodiac Sign</span>
-                <span id="resZodiac" class="value-text"></span>
-            </div>
-
-            <div class="result-item">
-                <span class="label-gold">Five Elements</span>
-                <span id="resElement" class="value-text"></span>
-                <div style="font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic;">
-                    Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
-                </div>
-            </div>
-
-            <div class="result-item">
-                <span class="label-gold">Horoscope</span>
-                <span id="resHoro" class="value-text"></span>
-            </div>
-
-            <div class="result-item">
-                <span class="label-gold">Zodiac Spirit Pairing</span>
-                <span id="resSpirit" class="value-text"></span>
-            </div>
-
-            <div class="profile-box">
-                <span class="label-gold">Personality Profile</span>
-                <span id="resProfile"></span>
-            </div>
+            <div class="zodiac-svg-box" id="zodiacIcon"></div>
+            <div class="result-item"><span class="label-gold">Zodiac Sign</span><span id="resZodiac" class="value-text"></span></div>
+            <div class="result-item"><span class="label-gold">Five Elements</span><span id="resElement" class="value-text"></span></div>
+            <div class="result-item"><span class="label-gold">Zodiac Spirit Pairing</span><span id="resSpirit" class="value-text"></span></div>
+            <div class="profile-box"><span class="label-gold">Personality Profile</span><span id="resProfile"></span></div>
         </div>
     </div>
 
     <footer>
-        <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
         <div class="footer-grid">
-            <div class="footer-col">
-                <b>Contact</b>
-                <p>TEL: 01202 611622</p>
-                <p>EMAIL: hello@ni-hao.life</p>
-            </div>
-            <div class="footer-col">
-                <b>Location</b>
-                <p>89 Commercial Road, Poole,</p>
-                <p>Dorset BH14 0JD</p>
-            </div>
+            <div class="footer-col"><b>Contact</b><p>01202 611622<br>hello@ni-hao.life</p></div>
+            <div class="footer-col"><b>Location</b><p>89 Commercial Road, Poole, Dorset BH14 0JD</p></div>
         </div>
     </footer>
 
     <script>
-        // 託管於可靠伺服器的高清圖標 (手動配對確保正確)
-        const zodiacImages = {
-            Rat: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_rat_512dp.png",
-            Ox: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_ox_512dp.png",
-            Tiger: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_tiger_512dp.png",
-            Rabbit: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_rabbit_512dp.png",
-            Dragon: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_dragon_512dp.png",
-            Snake: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_snake_512dp.png",
-            Horse: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_horse_512dp.png",
-            Goat: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_goat_512dp.png",
-            Monkey: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_monkey_512dp.png",
-            Rooster: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_rooster_512dp.png",
-            Dog: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_dog_512dp.png",
-            Pig: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_pig_512dp.png"
+        // 這是內嵌的精緻 SVG 代碼，保證 100% 顯示
+        const paths = {
+            Rat: `<path d="M12,2C10.3,2,9,3.3,9,5c0,0.5,0.1,1,0.4,1.4C7.8,7.3,7,9,7,11c0,3.9,2.2,7,5,7s5-3.1,5-7c0-2-0.8-3.7-2.4-4.6 C14.9,6,15,5.5,15,5C15,3.3,13.7,2,12,2z M10.5,10c0.3,0,0.5,0.2,0.5,0.5S10.8,11,10.5,11S10,10.8,10,10.5S10.2,10,10.5,10z M13.5,10 c0.3,0,0.5,0.2,0.5,0.5S13.8,11,13.5,11S13,10.8,13,10.5S13.2,10,13.5,10z M12,14c-1,0-1.5-0.5-1.5-0.5s0.5-0.5,1.5-0.5s1.5,0.5,1.5,0.5 S13,14,12,14z M12,18c-0.6,0-1,0.4-1,1s0.4,3,1,3s1-2.4,1-3S12.6,18,12,18z"/>`,
+            Ox: `<path d="M17,6c-1.1,0-2,0.9-2,2h-6c0-1.1-0.9-2-2-2S5,6.9,5,8v4c0,2.2,1.8,4,4,4h1v2c0,1.1,0.9,2,2,2s2-0.9,2-2v-2h1c2.2,0,4-1.8,4-4V8 C19,6.9,18.1,6,17,6z M12,15c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,15,12,15z M7,8.5c0-0.3,0.2-0.5,0.5-0.5S8,8.2,8,8.5S7.8,9,7.5,9 S7,8.8,7,8.5z M16.5,9c-0.3,0-0.5-0.2-0.5-0.5S16.2,8,16.5,8S17,8.2,17,8.5S16.8,9,16.5,9z"/>`,
+            Tiger: `<path d="M12,2C6.5,2,2,6.5,2,12s4.5,10,10,10s10-4.5,10-10S17.5,2,12,2z M12,18c-3.3,0-6-2.7-6-6s2.7-6,6-6s6,2.7,6,6S15.3,18,12,18z M9,10.5c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S9.8,11,9.5,11S9,10.8,9,10.5z M14.5,11c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5 s0.5,0.2,0.5,0.5S14.8,11,14.5,11z M12,16c-1,0-2-0.5-2-1h4C14,15.5,13,16,12,16z M13,7h-2l1-2L13,7z M7,12H5 M19,12h-2"/>`,
+            Rabbit: `<path d="M15,2c-1.1,0-2,0.9-2,2v6h-2V4c0-1.1-0.9-2-2-2S7,2.9,7,4v9c0,1.1,0.9,2,2,2h6c1.1,0,2-0.9,2-2V4C17,2.9,16.1,2,15,2z M9,11c-0.3,0-0.5-0.2-0.5-0.5S8.7,10,9,10s0.5,0.2,0.5,0.5S9.3,11,9,11z M15,11c-0.3,0-0.5-0.2-0.5-0.5S14.7,10,15,10s0.5,0.2,0.5,0.5 S15.3,11,15,11z M12,17c-1.1,0-2,0.9-2,2s0.9,2,2,2s2-0.9,2-2S13.1,17,12,17z"/>`,
+            Dragon: `<path d="M12,2c-4.4,0-8,3.6-8,8c0,2.2,0.9,4.2,2.3,5.7C5,16.5,4,18.1,4,20c0,1.1,0.9,2,2,2h12c1.1,0,2-0.9,2-2c0-1.9-1-3.5-2.3-4.3 c1.4-1.5,2.3-3.5,2.3-5.7C20,5.6,16.4,2,12,2z M9,10.5c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S9.8,11,9.5,11S9,10.8,9,10.5z M14.5,11 c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S14.8,11,14.5,11z M12,16c-1,0-2-0.5-2-1h4C14,15.5,13,16,12,16z M12,4l1,2h-2 L12,4z"/>`,
+            Snake: `<path d="M14.5,4C12,4,10,6,10,8.5S12,13,14.5,13s4.5,2,4.5,4.5S17,22,14.5,22S10,20,10,17.5c0-0.6-0.4-1-1-1s-1,0.4-1,1 c0,3.6,2.9,6.5,6.5,6.5s6.5-2.9,6.5-6.5S18.1,11,14.5,11S12,9.9,12,8.5s1.1-2.5,2.5-2.5s2.5,1.1,2.5,2.5c0,0.6,0.4,1,1,1s1-0.4,1-1 C19,5.1,17,4,14.5,4z M13,8.5c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S13.3,8.5,13,8.5z M16,8.5 c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S16.3,8.5,16,8.5z"/>`,
+            Horse: `<path d="M19,8c0-2.2-1.8-4-4-4h-4c-1.1,0-2,0.9-2,2v8l-2,2v2h10v-2l-2-2V8C15,8,16,8.9,16,10h2V8z M12,7.5c0-0.3,0.2-0.5,0.5-0.5 s0.5,0.2,0.5,0.5S12.8,8,12.5,8S12,7.8,12,7.5z M10,6h4c1.1,0,2,0.9,2,2h-1c-0.6,0-1-0.4-1-1H10V6z"/>`,
+            Goat: `<path d="M12,8c-3.3,0-6,2.7-6,6v4c0,1.1,0.9,2,2,2h8c1.1,0,2-0.9,2-2v-4C18,10.7,15.3,8,12,8z M10,14.5c0-0.3,0.2-0.5,0.5-0.5 s0.5,0.2,0.5,0.5S10.8,15,10.5,15S10,14.8,10,14.5z M13.5,15c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5 S13.8,15,13.5,15z M12,18c-0.5,0-1-0.2-1-0.5h2C13,17.8,12.5,18,12,18z M4,6c0,1.1,0.9,2,2,2s2-0.9,2-2V4c0-1.1-0.9-2-2-2S4,2.9,4,4V6z M16,6 c0,1.1,0.9,2,2,2s2-0.9,2-2V4c0-1.1-0.9-2-2-2s-2,0.9-2,2V6z"/>`,
+            Monkey: `<path d="M12,4c-3.3,0-6,2.7-6,6s2.7,6,6,6s6-2.7,6-6S15.3,4,12,4z M12,14c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S14.2,14,12,14z M10,10.5 c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S10.8,11,10.5,11S10,10.8,10,10.5z M13.5,11c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5 s0.5,0.2,0.5,0.5S13.8,11,13.5,11z M4,10c0-1.1,0.9-2,2-2c0.3,0,0.7,0.1,1,0.2c-0.3,0.5-0.5,1.1-0.5,1.8s0.2,1.3,0.5,1.8 c-0.3,0.1-0.7,0.2-1,0.2C4.9,12,4,11.1,4,10z M20,10c0,1.1-0.9,2-2,2c-0.3,0-0.7-0.1-1-0.2c0.3-0.5,0.5-1.1,0.5-1.8s-0.2-1.3-0.5-1.8 c0.3-0.1,0.7-0.2,1-0.2C19.1,8,20,8.9,20,10z"/>`,
+            Rooster: `<path d="M12,2L8,8h8L12,2z M12,10c-3.3,0-6,2.7-6,6v4h12v-4C18,12.7,15.3,10,12,10z M10.5,15c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5 S11.3,16,11,16S10.5,15.8,10.5,15z M13,16c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S13.3,16,13,16z M11,18h2l-1,1L11,18z M12,9c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S11.4,9,12,9z"/>`,
+            Dog: `<path d="M12,6c-1.7,0-3,1.3-3,3v5c0,1.7,1.3,3,3,3s3-1.3,3-3V9C15,7.3,13.7,6,12,6z M10.5,10c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5 S11.3,11,11,11S10.5,10.8,10.5,10z M13,11c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S13.3,11,13,11z M5,8 c0,2.8,2.2,5,5,5V9C10,6.2,7.8,4,5,4S0,6.2,0,9v2h3V8z M19,4c-2.8,0-5,2.2-5,5v4c2.8,0,5-2.2,5-5V4z M21,9v2h3V9c0-2.8-2.2-5-5-5v4 C19,8,19.9,8.4,20.6,9H21z"/>`,
+            Pig: `<path d="M12,6c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S16.4,6,12,6z M12,18c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S14.2,18,12,18z M10,13.5 c0-0.3,0.2-0.5,0.5-0.5s0.5,0.2,0.5,0.5S10.8,14,10.5,14S10,13.8,10,13.5z M13.5,14c-0.3,0-0.5-0.2-0.5-0.5s0.2-0.5,0.5-0.5 s0.5,0.2,0.5,0.5S13.8,14,13.5,14z M11,15.5h2v1h-2V15.5z M18,8c0.6,0,1,0.4,1,1s-0.4,1-1,1s-1-0.4-1-1S17.4,8,18,8z"/>`
         };
 
         const profiles = {
-            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
-            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
-            "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them." },
-            "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace." },
-            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
-            "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind." },
-            "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces." },
-            "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions." },
-            "Monkey": { element: "Metal", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They are master problem solvers who love to entertain." },
-            "Rooster": { element: "Metal", spirit: "Scotch - Hardworking & Observant", text: "Hardworking, observant, courageous, punctual, and loves to stand out. They are loyal friends who value honesty and present themselves with great pride." },
-            "Dog": { element: "Earth", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. Their integrity and sense of justice are unmatched." },
-            "Pig": { element: "Water", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac." }
+            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, and intelligent. Pioneers of the zodiac, they find opportunities everywhere." },
+            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, and honest. Known for their patience and endurance, they are the anchor in any storm." },
+            "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, adventurous, and powerful. Natural leaders who live life with intensity and charisma." },
+            "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, and peaceful. Refined individuals with a keen eye for beauty and diplomacy." },
+            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, and noble. The most vital sign, carrying an air of natural authority." },
+            "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, intuitive, and mysterious. Calm exteriors masking sharp, analytical minds." },
+            "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic and independent. They thrive on freedom and are often the life of the party." },
+            "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, and gentle. Peace-loving souls who appreciate the finer things in life." },
+            "Monkey": { element: "Metal", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, and full of curiosity. Master problem solvers who love to entertain." },
+            "Rooster": { element: "Metal", spirit: "Scotch - Hardworking & Observant", text: "Hardworking and observant. Loyal friends who value honesty and stand out with pride." },
+            "Dog": { element: "Earth", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, and fiercely protective. Reliable friends with a deep sense of justice." },
+            "Pig": { element: "Water", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, and joyful. They bring happiness to everyone with their heart of gold." }
         };
 
         const order = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
-
-        function getHoro(m, d) {
-            const days = [20,19,21,20,21,21,23,23,23,23,22,22];
-            const names = ["Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"];
-            return d < days[m-1] ? names[m-1] : names[m];
-        }
 
         function revealZodiac() {
             const val = document.getElementById('birthday').value;
@@ -261,10 +155,9 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('zodiacImgContainer').innerHTML = `<img src="${zodiacImages[sign]}" class="zodiac-img" alt="${sign}">`;
+            document.getElementById('zodiacIcon').innerHTML = `<svg class="zodiac-icon" viewBox="0 0 24 24">${paths[sign]}</svg>`;
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
-            document.getElementById('resHoro').innerText = getHoro(m, d);
             document.getElementById('resSpirit').innerText = data.spirit;
             document.getElementById('resProfile').innerText = data.text;
 
