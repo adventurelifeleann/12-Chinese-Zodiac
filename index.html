@@ -26,7 +26,6 @@
             min-height: 100vh;
         }
 
-        /* Logo 橫向排列 */
         header {
             padding: 40px 10px;
             text-align: center;
@@ -38,7 +37,7 @@
             margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
             border-bottom: 1px solid var(--primary-gold);
-            padding: 15px 0;
+            padding: 18px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -63,7 +62,7 @@
             width: 90%;
             max-width: 500px;
             background: var(--dark-box);
-            padding: 40px 25px;
+            padding: 45px 25px;
             border-radius: 4px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             margin-bottom: 60px;
@@ -72,19 +71,16 @@
             box-sizing: border-box;
         }
 
-        /* 標題行距加寬 (問題3) */
         h1.main-title {
             font-family: 'Cinzel', serif;
             color: var(--primary-gold);
             text-align: center;
             font-size: 1.5rem;
             margin-bottom: 40px;
-            line-height: 1.8; /* 加寬兩行間距離 */
+            line-height: 2.2; /* 問題3: 再次加寬間距 */
         }
         
         .main-title span { display: block; }
-
-        .input-group { margin-bottom: 30px; }
 
         label {
             display: block;
@@ -94,7 +90,7 @@
             color: #aaa;
         }
 
-        /* 生日輸入框優化 (問題4) */
+        /* 問題4: 修正手機輸入框顯示提示 */
         input[type="date"] {
             background: transparent;
             border: 1px solid var(--border-color);
@@ -107,15 +103,20 @@
             box-sizing: border-box;
             border-radius: 0;
             font-family: 'Montserrat', sans-serif;
-            appearance: none;
-            -webkit-appearance: none;
+            position: relative;
         }
-        
-        /* 讓手機版顯示提示字樣 (模擬 Placeholder) */
-        input[type="date"]:before {
-            content: attr(placeholder);
+
+        input[type="date"]::before {
+            content: "yyyy / mm / dd";
+            position: absolute;
             color: #666;
-            margin-right: 0.5em;
+            left: 50%;
+            transform: translateX(-50%);
+            pointer-events: none;
+        }
+
+        input[type="date"]:focus::before,
+        input[type="date"]:valid::before {
             display: none;
         }
 
@@ -131,10 +132,10 @@
             cursor: pointer;
             width: 100%;
             max-width: 300px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
 
-        /* 結果區域與生肖圖示 (問題7) */
+        /* 結果與圖片 (問題7) */
         #result {
             display: none;
             margin-top: 40px;
@@ -144,16 +145,15 @@
             animation: fadeIn 0.8s ease;
         }
 
-        .zodiac-icon-wrapper {
+        .zodiac-img-wrapper {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
-        .zodiac-svg {
-            width: 120px;
-            height: 120px;
-            fill: var(--primary-gold);
-            filter: drop-shadow(0 0 10px rgba(181, 155, 88, 0.3));
+        .zodiac-img {
+            width: 140px;
+            height: auto;
+            filter: sepia(1) saturate(1.5) hue-rotate(-5deg) brightness(1.1); /* 讓圖片更接近您的金色 */
         }
 
         .result-item { margin-bottom: 25px; }
@@ -167,7 +167,7 @@
             margin-bottom: 8px;
         }
 
-        .value-text { font-size: 1.25rem; font-weight: 400; display: block;}
+        .value-text { font-size: 1.25rem; font-weight: 400; }
 
         .profile-box {
             background: rgba(181, 155, 88, 0.08);
@@ -178,16 +178,16 @@
             font-size: 1.05rem;
         }
 
-        /* 五行註解 (問題6) */
+        /* 問題6: 五行註解 */
         .element-guide {
             font-size: 0.85rem;
             color: #888;
-            margin-top: 8px;
+            margin-top: 10px;
             font-style: italic;
             line-height: 1.4;
         }
 
-        /* Footer 修正 (問題1 & 2) */
+        /* 問題1 & 2: Footer 修正 */
         footer {
             width: 100%;
             padding: 60px 20px;
@@ -198,8 +198,8 @@
             box-sizing: border-box;
         }
 
-        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 20px; letter-spacing: 2px; }
-        .footer-section { margin-bottom: 25px; }
+        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
+        .footer-section { margin-bottom: 30px; }
         .footer-info { line-height: 2.2; color: #aaa; }
         .footer-info b { color: var(--text-light); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
 
@@ -224,13 +224,12 @@
         
         <div class="input-group">
             <label>Select Your Birthday</label>
-            <input type="date" id="birthday" placeholder="yyyy / mm / dd">
+            <input type="date" id="birthday" required>
             <button onclick="revealZodiac()" class="reveal-btn">REVEAL</button>
         </div>
 
         <div id="result">
-            <div class="zodiac-icon-wrapper" id="iconBox">
-                </div>
+            <div class="zodiac-img-wrapper" id="imgBox"></div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -282,35 +281,35 @@
     </footer>
 
     <script>
-        // SVG 圖標數據
-        const icons = {
-            Rat: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M50,45c-2,0-4,1-6,1c-5,0-9-4-9-9s4-9,9-9c2,0,4,1,6,1c4,0,7-3,7-7s-3-7-7-7c-6,0-12,4-15,10c-3-6-9-10-15-10c-4,0-7,3-7,7s3,7,7,7c2,0,4-1,6-1c5,0,9,4,9,9s-4,9-9,9c-2,0-4-1-6-1c-4,0-7,3-7,7s3,7,7,7c6,0,12-4,15-10C38,41,44,45,50,45z"/></svg>`,
-            Ox: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M56,18c-5,0-10,4-12,9c-2-5-7-9-12-9s-10,4-12,9c-2-5-7-9-12-9v6c5,0,8,4,8,8v12c0,4,3,7,7,7h24c4,0,7-3,7-7V32c0-4,3-8,8-8V18z"/></svg>`,
-            Tiger: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M32,8C18.7,8,8,18.7,8,32s10.7,24,24,24s24-10.7,24-24S45.3,8,32,8z M32,48c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S40.8,48,32,48z"/></svg>`,
-            Rabbit: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M42,8c-4.4,0-8,3.6-8,8v4c0,4.4,3.6,8,8,8s8-3.6,8-8v-4C50,11.6,46.4,8,42,8z M22,8c-4.4,0-8,3.6-8,8v4c0,4.4,3.6,8,8,8s8-3.6,8-8v-4C30,11.6,26.4,8,22,8z M32,30c-11,0-20,9-20,20h40C52,39,43,30,32,30z"/></svg>`,
-            Dragon: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M32,4C16.5,4,4,16.5,4,32s12.5,28,28,28s28-12.5,28-28S47.5,4,32,4z M32,52c-11,0-20-9-20-20s9-20,20-20s20,9,20,20S43,52,32,52z"/></svg>`,
-            Snake: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M32,12c-8,0-14,6-14,14s6,14,14,14s14,6,14,14s-6,14-14,14v-6c4,0,8-4,8-8s-4-8-8-8s-14-6-14-14s6-14,14-14V12z"/></svg>`,
-            Horse: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M48,12H32c-8.8,0-16,7.2-16,16v24h8V40h24c4.4,0,8-3.6,8-8V20C56,15.6,52.4,12,48,12z"/></svg>`,
-            Goat: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M32,16c-6.6,0-12,5.4-12,12v16h24V28C44,21.4,38.6,16,32,16z M12,12v12c0,4.4,3.6,8,8,8h4v-8c0-6.6-5.4-12-12-12z M52,12c-6.6,0-12,5.4-12,12v8h4c4.4,0,8-3.6,8-8V12z"/></svg>`,
-            Monkey: `<svg class="zodiac-svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="24" fill="none" stroke="currentColor" stroke-width="4"/><circle cx="32" cy="28" r="10"/></svg>`,
-            Rooster: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M32,8L12,48h40L32,8z M32,24l8,16H24L32,24z"/></svg>`,
-            Dog: `<svg class="zodiac-svg" viewBox="0 0 64 64"><path d="M32,12c-11,0-20,9-20,20v20h40V32C52,21,43,12,32,12z M24,28c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S26.2,28,24,28z M40,28c-2.2,0-4-1.8-4-4s1.8-4,4-4s4,1.8,4,4S42.2,28,40,28z"/></svg>`,
-            Pig: `<svg class="zodiac-svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="20"/><circle cx="26" cy="28" r="3"/><circle cx="38" cy="28" r="3"/><path d="M28,40h8v4h-8V40z"/></svg>`
+        // 圖片地址對應表 (使用穩定網址)
+        const zodiacImages = {
+            Rat: "https://cdn-icons-png.flaticon.com/512/3069/3069150.png",
+            Ox: "https://cdn-icons-png.flaticon.com/512/3069/3069151.png",
+            Tiger: "https://cdn-icons-png.flaticon.com/512/3069/3069152.png",
+            Rabbit: "https://cdn-icons-png.flaticon.com/512/3069/3069153.png",
+            Dragon: "https://cdn-icons-png.flaticon.com/512/3069/3069154.png",
+            Snake: "https://cdn-icons-png.flaticon.com/512/3069/3069155.png",
+            Horse: "https://cdn-icons-png.flaticon.com/512/3069/3069156.png",
+            Goat: "https://cdn-icons-png.flaticon.com/512/3069/3069157.png",
+            Monkey: "https://cdn-icons-png.flaticon.com/512/3069/3069158.png",
+            Rooster: "https://cdn-icons-png.flaticon.com/512/3069/3069159.png",
+            Dog: "https://cdn-icons-png.flaticon.com/512/3069/3069160.png",
+            Pig: "https://cdn-icons-png.flaticon.com/512/3069/3069161.png"
         };
 
         const zodiacData = {
-            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
-            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
-            "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them." },
-            "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace." },
-            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
-            "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind." },
-            "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces." },
-            "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions." },
-            "Monkey": { element: "Metal", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They are master problem solvers who love to entertain." },
-            "Rooster": { element: "Metal", spirit: "Scotch - Hardworking & Observant", text: "Hardworking, observant, courageous, punctual, and loves to stand out. They are loyal friends who value honesty and present themselves with great pride." },
-            "Dog": { element: "Earth", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. Their integrity and sense of justice are unmatched." },
-            "Pig": { element: "Water", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac." }
+            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac." },
+            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience." },
+            "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous." },
+            "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind." },
+            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, and noble." },
+            "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers." },
+            "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress." },
+            "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative." },
+            "Monkey": { element: "Metal", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, innovative, mischievously fun, and quick-witted." },
+            "Rooster": { element: "Metal", spirit: "Scotch - Hardworking & Observant", text: "Hardworking, observant, courageous, punctual, and loves to stand out." },
+            "Dog": { element: "Earth", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable." },
+            "Pig": { element: "Water", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, happy, easygoing, genuine, and joyful." }
         };
 
         const order = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
@@ -323,7 +322,7 @@
 
         function revealZodiac() {
             const val = document.getElementById('birthday').value;
-            if (!val) { alert("Please select your birthday."); return; }
+            if (!val) return;
             
             const date = new Date(val);
             const y = date.getFullYear();
@@ -337,8 +336,9 @@
             const sign = order[idx];
             const data = zodiacData[sign];
 
-            // 顯示結果
-            document.getElementById('iconBox').innerHTML = icons[sign] || '';
+            // 換圖
+            document.getElementById('imgBox').innerHTML = `<img src="${zodiacImages[sign]}" class="zodiac-img" alt="${sign}">`;
+            
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resHoro').innerText = getHoro(m, d);
