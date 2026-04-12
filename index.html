@@ -24,7 +24,7 @@
 
         header { padding: 50px 10px; text-align: center; width: 100%; }
 
-        /* 修正 Logo 大小，確保比標題大 */
+        /* 強化品牌 Logo 視覺 */
         .logo-container {
             max-width: 600px; margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
@@ -42,20 +42,20 @@
             text-align: center; box-sizing: border-box;
         }
 
-        /* 縮小副標題，使其不搶走 Logo 風采 */
         h1.main-title {
             font-family: 'Cinzel', serif; color: var(--primary-gold);
             font-size: 1.3rem; margin-bottom: 50px; line-height: 2; 
             letter-spacing: 3px; font-weight: 400;
         }
 
-        /* 增加間距 */
+        /* 增加標題與輸入框間距 */
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
         label {
-            display: block; margin-bottom: 35px; /* 增加與輸入框的間距 */
+            display: block; margin-bottom: 35px; 
             font-size: 1rem; letter-spacing: 2px; color: #aaa;
         }
 
+        /* 修正日期框 yyyy/mm/dd 同行顯示 */
         input[type="date"] {
             background: transparent; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
@@ -80,22 +80,18 @@
             cursor: pointer; width: 100%; max-width: 340px; margin-top: 35px;
         }
 
+        /* 結果區塊（無圖片版） */
         #result { display: none; margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 45px; text-align: left; }
 
-        /* 修正圖片裁切，確保完整顯示每個動物 */
-        .zodiac-sprite-viewer {
-            width: 180px; height: 180px; margin: 0 auto 40px;
-            background-image: url('https://i.ibb.co/6RvZz2G/chinese-zodiac-sign-animal-rat-ox-english-1024x597-png.webp');
-            background-repeat: no-repeat;
-            background-size: 720px 420px; /* 精確縮放比例 */
-            filter: sepia(100%) saturate(180%) brightness(95%) hue-rotate(10deg);
-            border: 1px solid var(--primary-gold); border-radius: 50%;
-        }
+        .result-title-box { text-align: center; margin-bottom: 40px; }
+        .large-zodiac-name { font-family: 'Cinzel', serif; font-size: 3.5rem; color: var(--primary-gold); margin: 0; letter-spacing: 8px; }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
-        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; }
+        
+        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; line-height: 1.5; }
+
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
             border-left: 4px solid var(--primary-gold); margin-top: 35px;
@@ -108,6 +104,8 @@
         }
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
+        
+        /* Footer 文字設為白色 */
         .footer-col p { color: #FFFFFF; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
@@ -115,6 +113,7 @@
             .logo-cn { font-size: 1.1rem; }
             .footer-grid { grid-template-columns: 1fr; }
             input[type="date"] { max-width: 280px; }
+            .large-zodiac-name { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -135,15 +134,31 @@
         </div>
 
         <div id="result">
-            <div id="sprite" class="zodiac-sprite-viewer"></div>
-            <div class="result-item"><span class="label-gold">Zodiac Sign</span><span id="resZodiac" class="value-text"></span></div>
+            <div class="result-title-box">
+                <p id="resBigName" class="large-zodiac-name"></p>
+                <p style="color: #5b6e6a; letter-spacing: 4px; font-size: 0.8rem;">CHINESE ZODIAC</p>
+            </div>
+
+            <div class="result-item">
+                <span class="label-gold">Zodiac Sign</span>
+                <span id="resZodiac" class="value-text"></span>
+            </div>
+
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
                 <div class="element-note">Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).</div>
             </div>
-            <div class="result-item"><span class="label-gold">Zodiac Spirit Pairing</span><span id="resSpirit" class="value-text"></span></div>
-            <div class="profile-box"><span class="label-gold">Personality Profile</span><span id="resProfile"></span></div>
+
+            <div class="result-item">
+                <span class="label-gold">Zodiac Spirit Pairing</span>
+                <span id="resSpirit" class="value-text"></span>
+            </div>
+
+            <div class="profile-box">
+                <span class="label-gold">Personality Profile</span>
+                <span id="resProfile"></span>
+            </div>
         </div>
     </div>
 
@@ -162,13 +177,6 @@
     </footer>
 
     <script>
-        // 重新精確定位大圖中的 12 個動物位置
-        const spritePos = {
-            "Rat": "0px 0px", "Ox": "-180px 0px", "Tiger": "-360px 0px", "Rabbit": "-540px 0px",
-            "Dragon": "0px -210px", "Snake": "-180px -210px", "Horse": "-360px -210px", "Goat": "-540px -210px",
-            "Monkey": "0px -420px", "Rooster": "-180px -420px", "Dog": "-360px -420px", "Pig": "-540px -420px"
-        };
-
         const profiles = {
             "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
             "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
@@ -201,7 +209,7 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('sprite').style.backgroundPosition = spritePos[sign];
+            document.getElementById('resBigName').innerText = sign.toUpperCase();
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resSpirit').innerText = data.spirit;
