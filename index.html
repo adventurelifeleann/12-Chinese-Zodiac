@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary-gold: #b59b58;
-            --bright-gold: #d4bc7d;
+            --gradient-gold: linear-gradient(135deg, #d4bc7d 0%, #b59b58 50%, #8a7645 100%);
             --dark-green: #111d1a;
             --dark-box: #0a1311;
             --text-light: #e0e0e0;
@@ -38,7 +38,7 @@
 
         .container {
             width: 92%; max-width: 600px;
-            background: var(--dark-box); padding: 40px 20px;
+            background: var(--dark-box); padding: 45px 20px;
             border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
             margin-bottom: 60px; border: 1px solid var(--border-color);
             text-align: center; box-sizing: border-box;
@@ -50,7 +50,15 @@
         }
         .main-title span { display: block; }
 
-        /* 修正手機版日期寬度 (避免換行) */
+        /* 修正標題與框框的間距 */
+        label {
+            display: block;
+            margin-bottom: 25px; /* 增加間距 */
+            font-size: 1rem;
+            letter-spacing: 1px;
+            color: #aaa;
+        }
+
         .input-wrapper { width: 100%; max-width: 360px; margin: 0 auto; }
 
         input[type="date"] {
@@ -58,7 +66,6 @@
             color: white; padding: 15px 5px; font-size: 1.15rem;
             width: 100%; text-align: center; border-radius: 0;
             font-family: 'Montserrat', sans-serif; position: relative;
-            letter-spacing: 1px;
         }
 
         input[type="date"]:invalid:before {
@@ -68,32 +75,30 @@
 
         .reveal-btn {
             background: var(--primary-gold); color: var(--dark-green);
-            border: none; padding: 16px; font-family: 'Cinzel', serif;
+            border: none; padding: 18px; font-family: 'Cinzel', serif;
             font-weight: bold; letter-spacing: 3px; font-size: 1.1rem;
-            cursor: pointer; width: 100%; max-width: 360px; margin-top: 25px;
+            cursor: pointer; width: 100%; max-width: 360px; margin-top: 30px;
         }
 
         #result {
-            display: none; margin-top: 40px; border-top: 1px solid var(--border-color);
-            padding-top: 40px; text-align: left; animation: fadeIn 0.8s ease;
+            display: none; margin-top: 45px; border-top: 1px solid var(--border-color);
+            padding-top: 45px; text-align: left; animation: fadeIn 0.8s ease;
         }
 
         .zodiac-img-box {
-            text-align: center; margin-bottom: 40px; height: 160px;
-            display: flex; justify-content: center; align-items: center;
+            text-align: center; margin-bottom: 40px;
         }
 
-        .zodiac-img {
-            height: 150px; width: auto;
-            /* 修正圖案風格：將圖案濾鏡調整為與網頁一致的金箔色 */
-            filter: sepia(1) saturate(1.8) hue-rotate(-5deg) brightness(0.9) contrast(1.1) drop-shadow(0 0 10px rgba(181, 155, 88, 0.4));
+        /* 精緻 SVG 樣式 */
+        .zodiac-svg {
+            width: 180px; height: 180px;
+            filter: drop-shadow(0 0 12px rgba(181, 155, 88, 0.5));
         }
+        .gold-fill { fill: url(#goldGradient); }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
-
-        .element-desc { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; }
 
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
@@ -107,18 +112,14 @@
         }
 
         .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
-        
-        .footer-grid {
-            max-width: 800px; margin: 0 auto;
-            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
-        }
-
+        .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
         .footer-col p { color: #aaa; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
             .footer-grid { grid-template-columns: 1fr; }
-            input[type="date"] { font-size: 1.05rem; } /* 手機版字體微縮確保不換行 */
+            input[type="date"] { font-size: 1.05rem; max-width: 300px; }
+            .reveal-btn { max-width: 300px; }
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -157,7 +158,7 @@
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
-                <div class="element-desc">
+                <div style="font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic;">
                     Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
                 </div>
             </div>
@@ -179,6 +180,16 @@
         </div>
     </div>
 
+    <svg style="width:0;height:0;position:absolute;">
+        <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#d4bc7d;stop-opacity:1" />
+                <stop offset="50%" style="stop-color:#b59b58;stop-opacity:1" />
+                <stop offset="100%" style="stop-color:#8a7645;stop-opacity:1" />
+            </linearGradient>
+        </defs>
+    </svg>
+
     <footer>
         <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
         <div class="footer-grid">
@@ -196,20 +207,24 @@
     </footer>
 
     <script>
-        // 確保圖片與生肖 100% 正確配對
-        const imgMap = {
-            Rat: "https://img.icons8.com/ios-filled/250/ffffff/mouse.png",
-            Ox: "https://img.icons8.com/ios-filled/250/ffffff/bull.png",
-            Tiger: "https://img.icons8.com/ios-filled/250/ffffff/tiger.png",
-            Rabbit: "https://img.icons8.com/ios-filled/250/ffffff/rabbit.png",
-            Dragon: "https://img.icons8.com/ios-filled/250/ffffff/dragon.png",
-            Snake: "https://img.icons8.com/ios-filled/250/ffffff/snake.png",
-            Horse: "https://img.icons8.com/ios-filled/250/ffffff/horse.png",
-            Goat: "https://img.icons8.com/ios-filled/250/ffffff/sheep.png",
-            Monkey: "https://img.icons8.com/ios-filled/250/ffffff/monkey.png",
-            Rooster: "https://img.icons8.com/ios-filled/250/ffffff/rooster.png",
-            Dog: "https://img.icons8.com/ios-filled/250/ffffff/dog.png",
-            Pig: "https://img.icons8.com/ios-filled/250/ffffff/pig.png"
+        const getZodiacSVG = (sign) => {
+            const head = `<svg class="zodiac-svg" viewBox="0 0 100 100">`;
+            const foot = `</svg>`;
+            const paths = {
+                Rat: `<path class="gold-fill" d="M75,70c-5,0-15-5-20-10c-5,5-15,10-20,10s-10-5-10-15c0-15,10-25,25-25s25,10,25,25C75,65,80,70,75,70z M35,45c2,0,4-2,4-4s-2-4-4-4s-4,2-4,4S33,45,35,45z M65,45c2,0,4-2,4-4s-2-4-4-4s-4,2-4,4S63,45,65,45z M50,85c15,0,30-10,30-10s-5-5-10-2l-20,10l-20-10c-5-3-10,2-10,2S35,85,50,85z"/>`,
+                Ox: `<path class="gold-fill" d="M20,30c0,0,5-15,15-15s10,10,10,10s5-10,15-10s15,15,15,15v30H20V30z M35,45h5M60,45h5 M40,65s5,5,10,5s10-5,10-5"/>`,
+                Tiger: `<path class="gold-fill" d="M50,15c-20,0-35,15-35,35s15,35,35,35s35-15,35-35S70,15,50,15z M35,45c2,0,4-2,4-4s-2-4-4-4s-4,2-4,4S33,45,35,45z M65,45c2,0,4-2,4-4s-2-4-4-4s-4,2-4,4S63,45,65,45z M40,65s5,5,10,5s10-5,10-5 M45,25v10M55,25v10"/>`,
+                Rabbit: `<path class="gold-fill" d="M35,40c0-15,5-30,5-30s5,15,5,30 M55,40c0-15,5-30,5-30s5,15,5,30 M50,45c-15,0-25,10-25,25s10,20,25,20s25-10,25-20S65,45,50,45z"/>`,
+                Dragon: `<path class="gold-fill" d="M50,10c-25,0-40,15-40,35s15,30,40,30s40-10,40-30S75,10,50,10z M35,40l-5,5 M65,40l5,5 M50,60s10,5,20,0"/>`,
+                Snake: `<path class="gold-fill" d="M30,25c0-10,10-15,20-15s20,5,20,15s-10,15-20,15s-20,5-20,15s10,15,20,15s20-5,20-15 M40,20c1.5,0,2,1,2,2s-0.5,2-2,2s-2-1-2-2S38.5,20,40,20z M60,20c1.5,0,2,1,2,2s-0.5,2-2,2s-2-1-2-2S58.5,20,60,20z"/>`,
+                Horse: `<path class="gold-fill" d="M25,80V25c0-10,10-15,20-15h20v20c0,10-10,15-20,15H25 M35,25c2,0,3,1,3,2.5s-1,2.5-3,2.5s-3-1-3-2.5S33,25,35,25z"/>`,
+                Goat: `<path class="gold-fill" d="M50,30c-15,0-25,10-25,25v25h50V55C75,40,65,30,50,30z M20,20c5,0,10,10,10,20 M80,20c-5,0-10,10-10,20 M50,85v-5"/>`,
+                Monkey: `<path class="gold-fill" d="M50,20c-18,0-30,12-30,30s12,30,30,30s30-12,30-30S68,20,50,20z M35,45c2,0,3,1,3,3s-1,3-3,3s-3-1-3-3S33,45,35,45z M65,45c2,0,3,1,3,3s-1,3-3,3s-3-1-3-3S63,45,65,45z M40,65s5,5,10,5s10-5,10-5"/>`,
+                Rooster: `<path class="gold-fill" d="M50,15L25,75h50L50,15z M50,35c3,0,5,2,5,5s-2,5-5,5s-5-2-5-5S47,35,50,35z M45,75v10M55,75v10"/>`,
+                Dog: `<path class="gold-fill" d="M30,25v30c0,15,20,20,20,20s20-5,20-20V25H30z M20,25c0,10,10,15,10,15 M80,25c0,10-10,15-10,15 M40,40h2M58,40h2"/>`,
+                Pig: `<path class="gold-fill" d="M50,20c-22,0-35,15-35,35s13,35,35,35s35-15,35-35S72,20,50,20z M40,50c5,0,10,3,10,8s-5,8-10,8s-10-3-10-8S35,50,40,50z"/>`
+            };
+            return head + (paths[sign] || "") + foot;
         };
 
         const profiles = {
@@ -250,7 +265,7 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('zodiacImg').innerHTML = `<img src="${imgMap[sign]}" class="zodiac-img" alt="${sign}">`;
+            document.getElementById('zodiacImg').innerHTML = getZodiacSVG(sign);
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resHoro').innerText = getHoro(m, d);
