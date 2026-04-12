@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Find Your Zodiac Cocktail | NI HAO</title>
+    <title>Find Your Chinese Zodiac Sign | NI HAO</title>
     <script src="https://cdn.jsdelivr.net/npm/lunar-javascript/lunar.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
+            /* 保持配色不變 */
             --primary-gold: #b59b58;
             --dark-green: #111d1a;
+            --dark-box: #0a1311;
             --text-light: #e0e0e0;
             --border-color: #3a4744;
         }
@@ -26,117 +28,138 @@
             min-height: 100vh;
         }
 
-        /* Header & Logo */
+        /* ----------------------------------------------------
+           Header & Logo 佈局更新 (修正問題1)
+        ---------------------------------------------------- */
         header {
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
             width: 100%;
         }
 
         .logo-container {
-            max-width: 300px;
+            max-width: 450px;
             margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
             border-bottom: 1px solid var(--primary-gold);
-            padding: 15px 0;
+            padding: 20px 0;
+            display: flex; /* 使用 flex 排成一排 */
+            justify-content: center; /* 置中 */
+            align-items: center; /* 垂直對齊 */
+            gap: 15px; /* 元素間距 */
         }
 
+        /* 英文 NI 和 HAO 的樣式 */
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             letter-spacing: 12px;
             color: var(--primary-gold);
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
         }
 
+        /* 中文 你好 的樣式，保持灰綠色 */
         .logo-cn {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             letter-spacing: 2px;
-            color: #5b6e6a; /* 灰綠色 */
+            color: #5b6e6a;
+            writing-mode: horizontal-tb; /* 確保是橫向的 */
         }
 
-        /* Main Content */
+        /* ----------------------------------------------------
+           Main Content & Functionality (修正問題2 & 3)
+        ---------------------------------------------------- */
         .container {
             width: 90%;
             max-width: 600px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 30px;
+            background: var(--dark-box); /* 使用深色背景框 */
+            padding: 40px;
             border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            margin-bottom: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            margin-bottom: 60px;
             border: 1px solid var(--border-color);
+            transition: all 0.5s ease;
         }
 
-        h1 {
+        /* 修改後的標題 */
+        h1.main-title {
             font-family: 'Cinzel', serif;
             color: var(--primary-gold);
             text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 30px;
+            font-size: 1.6rem;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
         }
 
         .input-group {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             text-align: center;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             font-weight: 300;
             letter-spacing: 1px;
+            color: #aaa;
         }
 
         input[type="date"] {
             background: transparent;
-            border: 1px solid var(--primary-gold);
+            border: 1px solid var(--border-color); /* 保持邊框顏色 */
             color: white;
-            padding: 12px;
-            font-size: 1rem;
+            padding: 15px;
+            font-size: 1.1rem;
             border-radius: 0;
-            width: 80%;
+            width: calc(100% - 32px); /* 扣除 padding */
+            max-width: 350px;
             outline: none;
             text-align: center;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1) sepia(50%) saturate(100%) hue-rotate(0deg) brightness(90%); /* 讓日曆圖標變金色/米色 */
         }
 
-        button {
+        button.reveal-btn {
             background: var(--primary-gold);
             color: var(--dark-green);
             border: none;
-            padding: 12px 30px;
+            padding: 15px 40px;
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
+            font-size: 1.1rem;
             cursor: pointer;
             transition: 0.3s;
             width: 100%;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
-        button:hover {
+        button.reveal-btn:hover {
             background: #d4bc7d;
         }
 
-        /* Results Section */
+        /* ----------------------------------------------------
+           Results Section
+        ---------------------------------------------------- */
         #result {
-            display: none;
+            display: none; /* 預設隱藏 */
             margin-top: 40px;
             border-top: 1px solid var(--border-color);
-            padding-top: 30px;
-            animation: fadeIn 0.8s ease;
+            padding-top: 40px;
+            animation: fadeIn 1s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .result-item {
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .label-gold {
@@ -144,37 +167,41 @@
             font-family: 'Cinzel', serif;
             font-weight: bold;
             display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            letter-spacing: 1px;
         }
 
         .value-text {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 400;
         }
 
         .profile-box {
-            background: rgba(181, 155, 88, 0.1);
-            padding: 20px;
-            border-left: 3px solid var(--primary-gold);
-            margin-top: 20px;
-            line-height: 1.6;
+            background: rgba(181, 155, 88, 0.08); /* 超級淡金色背景 */
+            padding: 25px;
+            border-left: 4px solid var(--primary-gold);
+            margin-top: 25px;
+            line-height: 1.8;
+            font-size: 1.05rem;
         }
 
         .element-guide {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: #888;
-            margin-top: 10px;
+            margin-top: 12px;
             font-style: italic;
         }
 
-        /* Footer */
+        /* ----------------------------------------------------
+           Footer
+        ---------------------------------------------------- */
         footer {
             width: 100%;
-            padding: 40px 0;
-            background: #0a1110;
+            padding: 50px 0;
+            background: #080f0e;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             border-top: 1px solid var(--border-color);
         }
 
@@ -182,31 +209,36 @@
             color: var(--primary-gold);
             letter-spacing: 3px;
             font-family: 'Cinzel', serif;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
         }
 
         .footer-info {
-            line-height: 2;
-            color: #999;
+            line-height: 2.2;
+            color: #aaa;
         }
 
         .footer-info b { color: var(--text-light); }
+
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <h1 class="logo-text">N I <span class="logo-cn">你好</span> H A O</h1>
+            <h1 class="logo-text">NI</h1>
+            <span class="logo-cn">你好</span>
+            <h1 class="logo-text">HAO</h1>
         </div>
     </header>
 
     <div class="container">
-        <h1>Discover Your Destiny</h1>
+        <h1 class="main-title">Discover Your Chinese Zodiac Sign</h1>
+        
         <div class="input-group">
             <label for="birthday">Select Your Birthday</label>
-            <input type="date" id="birthday" min="1920-01-01" max="2035-12-31">
-            <button onclick="calculate()">REVEAL</button>
+            <input type="date" id="birthday" min="1920-01-01" max="2035-12-31" placeholder="YYYY / MM / DD">
+            <button onclick="calculate()" class="reveal-btn">REVEAL</button>
         </div>
 
         <div id="result">
@@ -240,13 +272,14 @@
         <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
         <div class="footer-info">
             <b>Contact</b><br>
-            TEL: 01202 611622 | EMAIL: hello@ni-hao.life<br><br>
+            TEL: 01202 611622 | EMAIL: hello@ni-hao.life<br>
             <b>Location</b><br>
             89 Commercial Road, Poole, Dorset BH14 0JD
         </div>
     </footer>
 
     <script>
+        // 資料字典 (保持資料完整性)
         const zodiacProfiles = {
             "Rat": "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles.",
             "Ox": "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm.",
@@ -262,6 +295,7 @@
             "Pig": "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac."
         };
 
+        // 西洋星座判定函數
         function getHoroscope(date) {
             const month = date.getMonth() + 1;
             const day = date.getDate();
@@ -279,6 +313,7 @@
             return "Capricorn";
         }
 
+        // 主計算函數 (修正功能的核心)
         function calculate() {
             const dateVal = document.getElementById('birthday').value;
             if (!dateVal) {
@@ -286,37 +321,46 @@
                 return;
             }
 
-            const date = new Date(dateVal);
-            // 使用 Lunar-javascript 進行轉換
-            const lunar = Solar.fromYmd(date.getFullYear(), date.getMonth() + 1, date.getDate()).getLunar();
+            // 處理跨瀏覽器日期格式問題
+            const parts = dateVal.split('-');
+            if(parts.length < 3) return;
+            const year = parseInt(parts[0], 10);
+            const month = parseInt(parts[1], 10);
+            const day = parseInt(parts[2], 10);
+            const date = new Date(year, month - 1, day);
 
-            // 1. 農曆日期格式化 (英文)
-            const monthNames = ["", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            // 1. 使用 Solar.fromYmd 方法進行準確轉換 (解決閏月問題)
+            const solar = Solar.fromYmd(year, month, day);
+            const lunar = solar.getLunar();
+
+            // 2. 格式化農曆日期
             const lunarDateStr = `Year ${lunar.getYear()}, Month ${lunar.getMonth()}, Day ${lunar.getDay()} (Lunar Calendar)`;
             document.getElementById('lunarDate').innerText = lunarDateStr;
 
-            // 2. 生肖 (Zodiac)
+            // 3. 判定生肖 (並對應到英文)
             const zodiac = lunar.getYearZodiac();
-            // 對應翻譯
             const zodiacMap = { "鼠": "Rat", "牛": "Ox", "虎": "Tiger", "兔": "Rabbit", "龍": "Dragon", "蛇": "Snake", "馬": "Horse", "羊": "Goat", "猴": "Monkey", "雞": "Rooster", "狗": "Dog", "豬": "Pig" };
             const zodiacEn = zodiacMap[zodiac] || zodiac;
             document.getElementById('zodiac').innerText = zodiacEn;
 
-            // 3. 五行 (Element)
-            // 根據天干計算五行
+            // 4. 計算五行 (Element)
             const gan = lunar.getYearGan();
             const elementMap = { "甲": "Wood", "乙": "Wood", "丙": "Fire", "丁": "Fire", "戊": "Earth", "己": "Earth", "庚": "Metal", "辛": "Metal", "壬": "Water", "癸": "Water" };
             document.getElementById('element').innerText = elementMap[gan];
 
-            // 4. 星座 (Horoscope)
+            // 5. 判定西洋星座 (Horoscope)
             document.getElementById('horoscope').innerText = getHoroscope(date);
 
-            // 5. 個性描述 (Personality Profile)
+            // 6. 輸出個性描述
             document.getElementById('personality').innerText = zodiacProfiles[zodiacEn];
 
-            // 顯示結果
+            // 顯示結果區域
             document.getElementById('result').style.display = 'block';
-            document.getElementById('result').scrollIntoView({ behavior: 'smooth' });
+            
+            // 平滑捲動到結果區域，方便客人閱讀
+            setTimeout(() => {
+                window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
+            }, 100);
         }
     </script>
 </body>
