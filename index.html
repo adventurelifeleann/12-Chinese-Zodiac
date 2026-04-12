@@ -19,193 +19,98 @@
             background-color: var(--dark-green);
             color: var(--text-light);
             font-family: 'Montserrat', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin: 0; padding: 0;
+            display: flex; flex-direction: column; align-items: center;
             min-height: 100vh;
         }
 
-        header {
-            padding: 40px 10px;
-            text-align: center;
-            width: 100%;
-        }
+        header { padding: 40px 10px; text-align: center; width: 100%; }
 
         .logo-container {
-            max-width: 500px;
-            margin: 0 auto;
+            max-width: 500px; margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
             border-bottom: 1px solid var(--primary-gold);
-            padding: 20px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
+            padding: 20px 0; display: flex; justify-content: center; align-items: center; gap: 15px;
         }
 
-        .logo-text {
-            font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            letter-spacing: 8px;
-            color: var(--primary-gold);
-            margin: 0;
-        }
-
+        .logo-text { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 8px; color: var(--primary-gold); margin: 0; }
         .logo-cn { font-size: 1.1rem; color: #5b6e6a; }
 
         .container {
-            width: 90%;
-            max-width: 600px;
-            background: var(--dark-box);
-            padding: 40px 20px;
-            border-radius: 4px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            margin-bottom: 60px;
-            border: 1px solid var(--border-color);
-            text-align: center;
-            box-sizing: border-box;
+            width: 92%; max-width: 600px;
+            background: var(--dark-box); padding: 40px 20px;
+            border-radius: 4px; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            margin-bottom: 60px; border: 1px solid var(--border-color);
+            text-align: center; box-sizing: border-box;
         }
 
         h1.main-title {
-            font-family: 'Cinzel', serif;
-            color: var(--primary-gold);
-            text-align: center;
-            font-size: 1.6rem;
-            margin-bottom: 40px;
-            line-height: 2.2; 
+            font-family: 'Cinzel', serif; color: var(--primary-gold);
+            font-size: 1.6rem; margin-bottom: 40px; line-height: 2.3; 
         }
-        
         .main-title span { display: block; }
 
-        label {
-            display: block;
-            margin-bottom: 20px;
-            font-size: 0.95rem;
-            color: #aaa;
-        }
-
-        /* 修正日期輸入框 (問題2) */
-        .input-group {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        /* 修正手機版日期寬度 (避免換行) */
+        .input-wrapper { width: 100%; max-width: 360px; margin: 0 auto; }
 
         input[type="date"] {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: white;
-            padding: 15px;
-            font-size: 1.1rem;
-            width: 100%;
-            max-width: 340px; /* 增加寬度防止換行 */
-            text-align: center;
-            box-sizing: border-box;
-            border-radius: 0;
-            font-family: 'Montserrat', sans-serif;
-            position: relative;
-            white-space: nowrap; /* 強制不換行 */
+            background: transparent; border: 1px solid var(--border-color);
+            color: white; padding: 15px 5px; font-size: 1.15rem;
+            width: 100%; text-align: center; border-radius: 0;
+            font-family: 'Montserrat', sans-serif; position: relative;
+            letter-spacing: 1px;
         }
 
         input[type="date"]:invalid:before {
-            content: "yyyy / mm / dd";
-            color: #666;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
+            content: "yyyy / mm / dd"; color: #666;
+            position: absolute; left: 50%; transform: translateX(-50%);
         }
 
         .reveal-btn {
-            background: var(--primary-gold);
-            color: var(--dark-green);
-            border: none;
-            padding: 16px;
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
-            letter-spacing: 3px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            width: 100%;
-            max-width: 340px;
-            margin-top: 25px;
+            background: var(--primary-gold); color: var(--dark-green);
+            border: none; padding: 16px; font-family: 'Cinzel', serif;
+            font-weight: bold; letter-spacing: 3px; font-size: 1.1rem;
+            cursor: pointer; width: 100%; max-width: 360px; margin-top: 25px;
         }
 
-        /* 修正圖片顯示 (問題1) */
         #result {
-            display: none;
-            margin-top: 40px;
-            border-top: 1px solid var(--border-color);
-            padding-top: 40px;
-            text-align: left;
-            animation: fadeIn 0.8s ease;
+            display: none; margin-top: 40px; border-top: 1px solid var(--border-color);
+            padding-top: 40px; text-align: left; animation: fadeIn 0.8s ease;
         }
 
         .zodiac-img-box {
-            text-align: center;
-            margin-bottom: 40px;
-            height: 150px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            text-align: center; margin-bottom: 40px; height: 160px;
+            display: flex; justify-content: center; align-items: center;
         }
 
         .zodiac-img {
-            height: 140px;
-            width: auto;
-            /* 使用濾鏡將普通圖片轉為金箔色，搭配品牌風格 */
-            filter: sepia(1) saturate(2) hue-rotate(-5deg) brightness(0.9) contrast(1.2) drop-shadow(0 0 10px rgba(181, 155, 88, 0.4));
+            height: 150px; width: auto;
+            /* 修正圖案風格：將圖案濾鏡調整為與網頁一致的金箔色 */
+            filter: sepia(1) saturate(1.8) hue-rotate(-5deg) brightness(0.9) contrast(1.1) drop-shadow(0 0 10px rgba(181, 155, 88, 0.4));
         }
 
         .result-item { margin-bottom: 25px; }
-
-        .label-gold {
-            color: var(--primary-gold);
-            font-family: 'Cinzel', serif;
-            font-weight: bold;
-            font-size: 0.95rem;
-            display: block;
-            margin-bottom: 8px;
-        }
-
+        .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
 
-        .element-desc {
-            font-size: 0.85rem;
-            color: #777;
-            margin-top: 8px;
-            font-style: italic;
-        }
+        .element-desc { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; }
 
         .profile-box {
-            background: rgba(181, 155, 88, 0.06);
-            padding: 25px;
-            border-left: 4px solid var(--primary-gold);
-            margin-top: 35px;
-            line-height: 1.8;
-            font-size: 1.05rem;
+            background: rgba(181, 155, 88, 0.06); padding: 25px;
+            border-left: 4px solid var(--primary-gold); margin-top: 35px;
+            line-height: 1.8; font-size: 1.05rem;
         }
 
         footer {
-            width: 100%;
-            padding: 60px 20px;
-            background: #080f0e;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-            box-sizing: border-box;
+            width: 100%; padding: 60px 20px; background: #080f0e;
+            text-align: center; border-top: 1px solid var(--border-color); box-sizing: border-box;
         }
 
-        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; }
+        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
         
         .footer-grid {
-            max-width: 800px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            max-width: 800px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
         }
 
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
@@ -213,8 +118,7 @@
 
         @media (max-width: 600px) {
             .footer-grid { grid-template-columns: 1fr; }
-            input[type="date"] { max-width: 280px; font-size: 1rem; }
-            .reveal-btn { max-width: 280px; }
+            input[type="date"] { font-size: 1.05rem; } /* 手機版字體微縮確保不換行 */
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -236,7 +140,7 @@
             <span>Chinese Zodiac Sign</span>
         </h1>
         
-        <div class="input-group">
+        <div class="input-wrapper">
             <label>Select Your Birthday</label>
             <input type="date" id="birthday" required>
             <button onclick="revealZodiac()" class="reveal-btn">REVEAL</button>
@@ -292,20 +196,20 @@
     </footer>
 
     <script>
-        // 改用穩定圖片來源並搭配 CSS 金色濾鏡
+        // 確保圖片與生肖 100% 正確配對
         const imgMap = {
-            Rat: "https://img.icons8.com/ios-filled/200/b59b58/mouse.png",
-            Ox: "https://img.icons8.com/ios-filled/200/b59b58/bull.png",
-            Tiger: "https://img.icons8.com/ios-filled/200/b59b58/tiger.png",
-            Rabbit: "https://img.icons8.com/ios-filled/200/b59b58/rabbit.png",
-            Dragon: "https://img.icons8.com/ios-filled/200/b59b58/dragon.png",
-            Snake: "https://img.icons8.com/ios-filled/200/b59b58/snake.png",
-            Horse: "https://img.icons8.com/ios-filled/200/b59b58/horse.png",
-            Goat: "https://img.icons8.com/ios-filled/200/b59b58/sheep.png",
-            Monkey: "https://img.icons8.com/ios-filled/200/b59b58/monkey.png",
-            Rooster: "https://img.icons8.com/ios-filled/200/b59b58/rooster.png",
-            Dog: "https://img.icons8.com/ios-filled/200/b59b58/dog.png",
-            Pig: "https://img.icons8.com/ios-filled/200/b59b58/pig.png"
+            Rat: "https://img.icons8.com/ios-filled/250/ffffff/mouse.png",
+            Ox: "https://img.icons8.com/ios-filled/250/ffffff/bull.png",
+            Tiger: "https://img.icons8.com/ios-filled/250/ffffff/tiger.png",
+            Rabbit: "https://img.icons8.com/ios-filled/250/ffffff/rabbit.png",
+            Dragon: "https://img.icons8.com/ios-filled/250/ffffff/dragon.png",
+            Snake: "https://img.icons8.com/ios-filled/250/ffffff/snake.png",
+            Horse: "https://img.icons8.com/ios-filled/250/ffffff/horse.png",
+            Goat: "https://img.icons8.com/ios-filled/250/ffffff/sheep.png",
+            Monkey: "https://img.icons8.com/ios-filled/250/ffffff/monkey.png",
+            Rooster: "https://img.icons8.com/ios-filled/250/ffffff/rooster.png",
+            Dog: "https://img.icons8.com/ios-filled/250/ffffff/dog.png",
+            Pig: "https://img.icons8.com/ios-filled/250/ffffff/pig.png"
         };
 
         const profiles = {
