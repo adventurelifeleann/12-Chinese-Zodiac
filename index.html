@@ -8,7 +8,6 @@
     <style>
         :root {
             --primary-gold: #b59b58;
-            --bright-gold: #d4bc7d;
             --dark-green: #111d1a;
             --dark-box: #0a1311;
             --text-light: #e0e0e0;
@@ -21,7 +20,6 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
-            min-height: 100vh;
         }
 
         header { padding: 40px 10px; text-align: center; width: 100%; }
@@ -48,35 +46,23 @@
             font-family: 'Cinzel', serif; color: var(--primary-gold);
             font-size: 1.65rem; margin-bottom: 40px; line-height: 2.3; 
         }
-        .main-title span { display: block; }
 
+        /* 修正生日框：yyyy/mm/dd 在同行，且手機與網頁同步顯示 */
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
-
-        label {
-            display: block; margin-bottom: 25px; 
-            font-size: 1rem; letter-spacing: 1px; color: #aaa;
-        }
-
-        /* 日期輸入框：修正 yyyy/mm/dd 顯示與換行問題 */
+        
         input[type="date"] {
             background: transparent; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
             width: 100%; max-width: 360px; text-align: center;
             border-radius: 0; font-family: 'Montserrat', sans-serif;
             box-sizing: border-box; position: relative;
-            min-height: 55px;
-        }
-
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.8) sepia(100%) saturate(500%) hue-rotate(10deg);
-            cursor: pointer;
         }
 
         input[type="date"]:before {
             content: "yyyy / mm / dd";
             position: absolute; left: 50%; top: 50%;
             transform: translate(-50%, -50%);
-            color: #555; width: 100%; white-space: nowrap; /* 確保不換行 */
+            color: #555; width: 100%; white-space: nowrap;
             pointer-events: none;
         }
 
@@ -88,27 +74,24 @@
             border: none; padding: 18px; font-family: 'Cinzel', serif;
             font-weight: bold; letter-spacing: 3px; font-size: 1.1rem;
             cursor: pointer; width: 100%; max-width: 340px; margin-top: 30px;
-            transition: 0.3s;
         }
 
-        #result {
-            display: none; margin-top: 50px; border-top: 1px solid var(--border-color);
-            padding-top: 45px; text-align: left; animation: fadeIn 0.8s ease;
-        }
+        #result { display: none; margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 45px; text-align: left; }
 
-        /* 圖片顏色處理：改為與官網 Logo 一致的金色 */
-        .zodiac-img-box { text-align: center; margin-bottom: 40px; }
-        .zodiac-img {
-            width: 160px; height: auto;
-            /* 特殊濾鏡：將黑色圖片轉為 #b59b58 金色 */
-            filter: sepia(100%) saturate(300%) brightness(85%) hue-rotate(10deg) drop-shadow(0 0 5px rgba(181, 155, 88, 0.3));
+        /* 裁切您上傳的 12 生肖大圖，並過濾成金箔色 */
+        .zodiac-sprite-viewer {
+            width: 150px; height: 150px; margin: 0 auto 40px;
+            background-image: url('https://i.ibb.co/6RvZz2G/chinese-zodiac-sign-animal-rat-ox-english-1024x597-png.webp'); /* 這是您上傳的那張大圖 */
+            background-size: 614px 358px; /* 縮放比例計算 */
+            filter: sepia(100%) saturate(200%) brightness(90%) hue-rotate(10deg);
+            border: 1px solid var(--primary-gold); border-radius: 50%;
         }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
         
-        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; line-height: 1.5; }
+        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; }
 
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
@@ -118,10 +101,9 @@
 
         footer {
             width: 100%; padding: 60px 20px; background: #080f0e;
-            text-align: center; border-top: 1px solid var(--border-color); box-sizing: border-box;
+            text-align: center; border-top: 1px solid var(--border-color);
         }
 
-        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
         
@@ -132,26 +114,18 @@
             .footer-grid { grid-template-columns: 1fr; }
             input[type="date"] { max-width: 290px; }
         }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
     <header>
         <div class="logo-container">
-            <h1 class="logo-text">NI</h1>
-            <span class="logo-cn">你好</span>
-            <h1 class="logo-text">HAO</h1>
+            <h1 class="logo-text">NI</h1><span class="logo-cn">你好</span><h1 class="logo-text">HAO</h1>
         </div>
     </header>
 
     <div class="container">
-        <h1 class="main-title">
-            <span>Discover Your</span>
-            <span>Chinese Zodiac Sign</span>
-        </h1>
-        
+        <h1 class="main-title">Discover Your<br>Chinese Zodiac Sign</h1>
         <div class="input-group">
             <label>Select Your Birthday</label>
             <input type="date" id="birthday" required>
@@ -159,35 +133,19 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-img-box" id="zodiacImgArea"></div>
-
-            <div class="result-item">
-                <span class="label-gold">Zodiac Sign</span>
-                <span id="resZodiac" class="value-text"></span>
-            </div>
-
+            <div id="sprite" class="zodiac-sprite-viewer"></div>
+            <div class="result-item"><span class="label-gold">Zodiac Sign</span><span id="resZodiac" class="value-text"></span></div>
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
-                <div class="element-note">
-                    Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
-                </div>
+                <div class="element-note">Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).</div>
             </div>
-
-            <div class="result-item">
-                <span class="label-gold">Zodiac Spirit Pairing</span>
-                <span id="resSpirit" class="value-text"></span>
-            </div>
-
-            <div class="profile-box">
-                <span class="label-gold">Personality Profile</span>
-                <span id="resProfile"></span>
-            </div>
+            <div class="result-item"><span class="label-gold">Zodiac Spirit Pairing</span><span id="resSpirit" class="value-text"></span></div>
+            <div class="profile-box"><span class="label-gold">Personality Profile</span><span id="resProfile"></span></div>
         </div>
     </div>
 
     <footer>
-        <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
         <div class="footer-grid">
             <div class="footer-col">
                 <b>Contact</b>
@@ -196,27 +154,17 @@
             </div>
             <div class="footer-col">
                 <b>Location</b>
-                <p>89 Commercial Road, Poole,</p>
-                <p>Dorset BH14 0JD</p>
+                <p>89 Commercial Road, Poole,<br>Dorset BH14 0JD</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // 使用您上傳的圖片網址，並透過 CSS 濾鏡統一改色
-        const zodiacImgs = {
-            Rat: "https://i.ibb.co/Xf8Y6zV/rat.png",
-            Ox: "https://i.ibb.co/9VzN5rM/ox.png",
-            Tiger: "https://i.ibb.co/L6vV4rF/tiger.png",
-            Rabbit: "https://i.ibb.co/zXq8m9h/rabbit.png",
-            Dragon: "https://i.ibb.co/mBf8M9k/dragon.png",
-            Snake: "https://i.ibb.co/mBf8M9k/snake.png", 
-            Horse: "https://i.ibb.co/mBf8M9k/horse.png",
-            Goat: "https://i.ibb.co/mBf8M9k/goat.png",
-            Monkey: "https://i.ibb.co/mBf8M9k/monkey.png",
-            Rooster: "https://i.ibb.co/mBf8M9k/rooster.png",
-            Dog: "https://i.ibb.co/mBf8M9k/dog.png",
-            Pig: "https://i.ibb.co/mBf8M9k/pig.png"
+        // 定義 12 生肖在大圖中的背景座標 (Sprite Mapping)
+        const spritePos = {
+            "Rat": "0px 0px", "Ox": "-153px 0px", "Tiger": "-306px 0px", "Rabbit": "-459px 0px",
+            "Dragon": "0px -179px", "Snake": "-153px -179px", "Horse": "-306px -179px", "Goat": "-459px -179px",
+            "Monkey": "0px -358px", "Rooster": "-153px -358px", "Dog": "-306px -358px", "Pig": "-459px -358px"
         };
 
         const profiles = {
@@ -251,9 +199,7 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            // 顯示對應圖片（若外部連結失效，請將其替換為您本地託管的圖片網址）
-            document.getElementById('zodiacImgArea').innerHTML = `<img src="${zodiacImgs[sign]}" class="zodiac-img" alt="${sign}">`;
-            
+            document.getElementById('sprite').style.backgroundPosition = spritePos[sign];
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resSpirit').innerText = data.spirit;
