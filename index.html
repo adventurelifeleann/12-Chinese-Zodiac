@@ -22,17 +22,17 @@
             display: flex; flex-direction: column; align-items: center;
         }
 
-        header { padding: 40px 10px; text-align: center; width: 100%; }
+        header { padding: 50px 10px; text-align: center; width: 100%; }
 
+        /* 修正 Logo 大小，確保比標題大 */
         .logo-container {
-            max-width: 500px; margin: 0 auto;
+            max-width: 600px; margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
             border-bottom: 1px solid var(--primary-gold);
-            padding: 20px 0; display: flex; justify-content: center; align-items: center; gap: 15px;
+            padding: 25px 0; display: flex; justify-content: center; align-items: center; gap: 20px;
         }
-
-        .logo-text { font-family: 'Cinzel', serif; font-size: 2rem; letter-spacing: 8px; color: var(--primary-gold); margin: 0; }
-        .logo-cn { font-size: 1.1rem; color: #5b6e6a; }
+        .logo-text { font-family: 'Cinzel', serif; font-size: 2.8rem; letter-spacing: 12px; color: var(--primary-gold); margin: 0; font-weight: 700; }
+        .logo-cn { font-size: 1.5rem; color: #5b6e6a; font-weight: 400; }
 
         .container {
             width: 92%; max-width: 600px;
@@ -42,14 +42,20 @@
             text-align: center; box-sizing: border-box;
         }
 
+        /* 縮小副標題，使其不搶走 Logo 風采 */
         h1.main-title {
             font-family: 'Cinzel', serif; color: var(--primary-gold);
-            font-size: 1.65rem; margin-bottom: 40px; line-height: 2.3; 
+            font-size: 1.3rem; margin-bottom: 50px; line-height: 2; 
+            letter-spacing: 3px; font-weight: 400;
         }
 
-        /* 修正生日框：yyyy/mm/dd 在同行，且手機與網頁同步顯示 */
+        /* 增加間距 */
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
-        
+        label {
+            display: block; margin-bottom: 35px; /* 增加與輸入框的間距 */
+            font-size: 1rem; letter-spacing: 2px; color: #aaa;
+        }
+
         input[type="date"] {
             background: transparent; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
@@ -65,34 +71,31 @@
             color: #555; width: 100%; white-space: nowrap;
             pointer-events: none;
         }
-
-        input[type="date"]:focus:before,
-        input[type="date"]:valid:before { display: none; }
+        input[type="date"]:focus:before, input[type="date"]:valid:before { display: none; }
 
         .reveal-btn {
             background: var(--primary-gold); color: var(--dark-green);
             border: none; padding: 18px; font-family: 'Cinzel', serif;
             font-weight: bold; letter-spacing: 3px; font-size: 1.1rem;
-            cursor: pointer; width: 100%; max-width: 340px; margin-top: 30px;
+            cursor: pointer; width: 100%; max-width: 340px; margin-top: 35px;
         }
 
         #result { display: none; margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 45px; text-align: left; }
 
-        /* 裁切您上傳的 12 生肖大圖，並過濾成金箔色 */
+        /* 修正圖片裁切，確保完整顯示每個動物 */
         .zodiac-sprite-viewer {
-            width: 150px; height: 150px; margin: 0 auto 40px;
-            background-image: url('https://i.ibb.co/6RvZz2G/chinese-zodiac-sign-animal-rat-ox-english-1024x597-png.webp'); /* 這是您上傳的那張大圖 */
-            background-size: 614px 358px; /* 縮放比例計算 */
-            filter: sepia(100%) saturate(200%) brightness(90%) hue-rotate(10deg);
+            width: 180px; height: 180px; margin: 0 auto 40px;
+            background-image: url('https://i.ibb.co/6RvZz2G/chinese-zodiac-sign-animal-rat-ox-english-1024x597-png.webp');
+            background-repeat: no-repeat;
+            background-size: 720px 420px; /* 精確縮放比例 */
+            filter: sepia(100%) saturate(180%) brightness(95%) hue-rotate(10deg);
             border: 1px solid var(--primary-gold); border-radius: 50%;
         }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
-        
         .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; }
-
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
             border-left: 4px solid var(--primary-gold); margin-top: 35px;
@@ -103,16 +106,15 @@
             width: 100%; padding: 60px 20px; background: #080f0e;
             text-align: center; border-top: 1px solid var(--border-color);
         }
-
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
-        
-        /* 修正 Location 與 Contact 文字為白色 */
         .footer-col p { color: #FFFFFF; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
+            .logo-text { font-size: 2rem; letter-spacing: 6px; }
+            .logo-cn { font-size: 1.1rem; }
             .footer-grid { grid-template-columns: 1fr; }
-            input[type="date"] { max-width: 290px; }
+            input[type="date"] { max-width: 280px; }
         }
     </style>
 </head>
@@ -125,7 +127,7 @@
     </header>
 
     <div class="container">
-        <h1 class="main-title">Discover Your<br>Chinese Zodiac Sign</h1>
+        <h1 class="main-title">Discover Your Chinese Zodiac Sign</h1>
         <div class="input-group">
             <label>Select Your Birthday</label>
             <input type="date" id="birthday" required>
@@ -160,11 +162,11 @@
     </footer>
 
     <script>
-        // 定義 12 生肖在大圖中的背景座標 (Sprite Mapping)
+        // 重新精確定位大圖中的 12 個動物位置
         const spritePos = {
-            "Rat": "0px 0px", "Ox": "-153px 0px", "Tiger": "-306px 0px", "Rabbit": "-459px 0px",
-            "Dragon": "0px -179px", "Snake": "-153px -179px", "Horse": "-306px -179px", "Goat": "-459px -179px",
-            "Monkey": "0px -358px", "Rooster": "-153px -358px", "Dog": "-306px -358px", "Pig": "-459px -358px"
+            "Rat": "0px 0px", "Ox": "-180px 0px", "Tiger": "-360px 0px", "Rabbit": "-540px 0px",
+            "Dragon": "0px -210px", "Snake": "-180px -210px", "Horse": "-360px -210px", "Goat": "-540px -210px",
+            "Monkey": "0px -420px", "Rooster": "-180px -420px", "Dog": "-360px -420px", "Pig": "-540px -420px"
         };
 
         const profiles = {
