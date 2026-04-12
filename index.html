@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Find Your Chinese Zodiac Sign | NI HAO</title>
+    <title>Zodiac Discovery | NI HAO</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -50,20 +50,11 @@
         }
         .main-title span { display: block; }
 
-        /* 修正間距問題 */
-        .input-group {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
 
         label {
-            display: block;
-            margin-bottom: 25px; /* 增加與輸入框的距離 */
-            font-size: 1rem;
-            letter-spacing: 1px;
-            color: #aaa;
+            display: block; margin-bottom: 25px; 
+            font-size: 1rem; letter-spacing: 1px; color: #aaa;
         }
 
         input[type="date"] {
@@ -71,12 +62,7 @@
             color: white; padding: 15px; font-size: 1.1rem;
             width: 100%; max-width: 340px; text-align: center;
             border-radius: 0; font-family: 'Montserrat', sans-serif;
-            position: relative; box-sizing: border-box;
-        }
-
-        input[type="date"]:invalid:before {
-            content: "yyyy / mm / dd"; color: #555;
-            position: absolute; left: 50%; transform: translateX(-50%);
+            box-sizing: border-box;
         }
 
         .reveal-btn {
@@ -87,29 +73,32 @@
             transition: 0.3s;
         }
 
-        .reveal-btn:hover { background: var(--bright-gold); }
-
         #result {
             display: none; margin-top: 50px; border-top: 1px solid var(--border-color);
             padding-top: 45px; text-align: left; animation: fadeIn 0.8s ease;
         }
 
-        /* 圖片視覺強化 (問題修正主體) */
-        .zodiac-img-box {
-            text-align: center; margin-bottom: 40px; height: 160px;
-            display: flex; justify-content: center; align-items: center;
+        /* 藝術感文字替代圖片 */
+        .zodiac-visual-box {
+            text-align: center; margin-bottom: 40px; position: relative;
         }
-
-        .zodiac-img {
-            height: 150px; width: auto;
-            /* 將高清圖片濾鏡調整為精緻的金箔感，符合餐廳風格 */
-            filter: sepia(1) saturate(1.8) hue-rotate(-5deg) brightness(0.9) contrast(1.1) drop-shadow(0 0 10px rgba(181, 155, 88, 0.4));
+        .large-sign-name {
+            font-family: 'Cinzel', serif; font-size: 4.5rem; color: var(--primary-gold);
+            margin: 0; letter-spacing: 10px; opacity: 0.9;
+        }
+        .year-indicator {
+            font-size: 0.9rem; color: #5b6e6a; letter-spacing: 5px; 
+            margin-top: -10px; font-weight: 300;
         }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
+        
+        /* 找回 Element 註解樣式 */
+        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; line-height: 1.5; }
 
+        /* 找回 Profile 完整樣式 */
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
             border-left: 4px solid var(--primary-gold); margin-top: 35px;
@@ -128,8 +117,7 @@
 
         @media (max-width: 600px) {
             .footer-grid { grid-template-columns: 1fr; }
-            input[type="date"] { max-width: 280px; font-size: 1rem; }
-            .reveal-btn { max-width: 280px; }
+            .large-sign-name { font-size: 3rem; }
         }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -158,7 +146,10 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-img-box" id="zodiacImgContainer"></div>
+            <div class="zodiac-visual-box">
+                <p id="resBigName" class="large-sign-name"></p>
+                <p class="year-indicator">ZODIAC SPIRIT</p>
+            </div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -168,14 +159,9 @@
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
-                <div style="font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic;">
+                <div class="element-note">
                     Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
                 </div>
-            </div>
-
-            <div class="result-item">
-                <span class="label-gold">Horoscope</span>
-                <span id="resHoro" class="value-text"></span>
             </div>
 
             <div class="result-item">
@@ -196,8 +182,7 @@
             <div class="footer-col">
                 <b>Contact</b>
                 <p>TEL: 01202 611622</p>
-                <p>EMAIL: hello@ni-hao.life</p>
-            </div>
+                <p>EMAIL: hello@ni-hao.life</p> </div>
             <div class="footer-col">
                 <b>Location</b>
                 <p>89 Commercial Road, Poole,</p>
@@ -207,22 +192,6 @@
     </footer>
 
     <script>
-        // 託管於可靠伺服器的高清圖標 (手動配對確保正確)
-        const zodiacImages = {
-            Rat: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_rat_512dp.png",
-            Ox: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_ox_512dp.png",
-            Tiger: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_tiger_512dp.png",
-            Rabbit: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_rabbit_512dp.png",
-            Dragon: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_dragon_512dp.png",
-            Snake: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_snake_512dp.png",
-            Horse: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_horse_512dp.png",
-            Goat: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_goat_512dp.png",
-            Monkey: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_monkey_512dp.png",
-            Rooster: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_rooster_512dp.png",
-            Dog: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_dog_512dp.png",
-            Pig: "https://www.gstatic.com/images/branding/product/2x/noto_zodiac_pig_512dp.png"
-        };
-
         const profiles = {
             "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
             "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
@@ -240,12 +209,6 @@
 
         const order = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
 
-        function getHoro(m, d) {
-            const days = [20,19,21,20,21,21,23,23,23,23,22,22];
-            const names = ["Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"];
-            return d < days[m-1] ? names[m-1] : names[m];
-        }
-
         function revealZodiac() {
             const val = document.getElementById('birthday').value;
             if (!val) return;
@@ -261,10 +224,9 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('zodiacImgContainer').innerHTML = `<img src="${zodiacImages[sign]}" class="zodiac-img" alt="${sign}">`;
+            document.getElementById('resBigName').innerText = sign.toUpperCase();
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
-            document.getElementById('resHoro').innerText = getHoro(m, d);
             document.getElementById('resSpirit').innerText = data.spirit;
             document.getElementById('resProfile').innerText = data.text;
 
