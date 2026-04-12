@@ -26,184 +26,223 @@
             min-height: 100vh;
         }
 
+        /* Logo 區域 - 電腦/手機通用 */
         header {
-            padding: 40px 10px;
+            padding: 50px 10px;
             text-align: center;
             width: 100%;
         }
 
         .logo-container {
-            max-width: 90%;
+            max-width: 500px;
             margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
             border-bottom: 1px solid var(--primary-gold);
-            padding: 18px 0;
+            padding: 20px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 2rem;
-            letter-spacing: 8px;
+            font-size: 2.2rem;
+            letter-spacing: 10px;
             color: var(--primary-gold);
             margin: 0;
         }
 
         .logo-cn {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: #5b6e6a;
             white-space: nowrap;
         }
 
         .container {
             width: 90%;
-            max-width: 500px;
+            max-width: 600px;
             background: var(--dark-box);
-            padding: 45px 25px;
+            padding: 50px 30px;
             border-radius: 4px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            margin-bottom: 60px;
+            margin-bottom: 80px;
             border: 1px solid var(--border-color);
             text-align: center;
             box-sizing: border-box;
         }
 
+        /* 標題間距加寬 (問題3修正) */
         h1.main-title {
             font-family: 'Cinzel', serif;
             color: var(--primary-gold);
             text-align: center;
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            line-height: 2.2; /* 問題3: 再次加寬間距 */
+            font-size: 1.7rem;
+            margin-bottom: 45px;
+            line-height: 2.5; 
         }
         
         .main-title span { display: block; }
 
         label {
             display: block;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
+            margin-bottom: 20px;
+            font-size: 1rem;
             letter-spacing: 1px;
             color: #aaa;
         }
 
-        /* 問題4: 修正手機輸入框顯示提示 */
+        /* 修正生日框 (問題4) */
+        .date-input-wrapper {
+            position: relative;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
         input[type="date"] {
             background: transparent;
             border: 1px solid var(--border-color);
             color: white;
             padding: 15px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             width: 100%;
-            max-width: 300px;
             text-align: center;
             box-sizing: border-box;
             border-radius: 0;
             font-family: 'Montserrat', sans-serif;
-            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
         }
 
-        input[type="date"]::before {
+        /* 模擬 Placeholder */
+        input[type="date"]:invalid:before {
             content: "yyyy / mm / dd";
+            color: #555;
             position: absolute;
-            color: #666;
             left: 50%;
             transform: translateX(-50%);
-            pointer-events: none;
-        }
-
-        input[type="date"]:focus::before,
-        input[type="date"]:valid::before {
-            display: none;
         }
 
         .reveal-btn {
             background: var(--primary-gold);
             color: var(--dark-green);
             border: none;
-            padding: 16px;
+            padding: 18px;
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             font-size: 1.1rem;
             cursor: pointer;
             width: 100%;
-            max-width: 300px;
-            margin-top: 25px;
+            max-width: 320px;
+            margin-top: 30px;
+            transition: 0.3s;
         }
 
-        /* 結果與圖片 (問題7) */
+        .reveal-btn:hover { background: #d4bc7d; }
+
+        /* 結果顯示與圖片 (問題7) */
         #result {
             display: none;
-            margin-top: 40px;
+            margin-top: 50px;
             border-top: 1px solid var(--border-color);
-            padding-top: 40px;
+            padding-top: 50px;
             text-align: left;
             animation: fadeIn 0.8s ease;
         }
 
-        .zodiac-img-wrapper {
+        .zodiac-img-box {
             text-align: center;
-            margin-bottom: 35px;
+            margin-bottom: 40px;
         }
 
-        .zodiac-img {
-            width: 140px;
+        .zodiac-img-box img {
+            width: 160px;
             height: auto;
-            filter: sepia(1) saturate(1.5) hue-rotate(-5deg) brightness(1.1); /* 讓圖片更接近您的金色 */
+            filter: drop-shadow(0 0 15px rgba(181, 155, 88, 0.4));
         }
 
-        .result-item { margin-bottom: 25px; }
+        .result-item { margin-bottom: 30px; }
 
         .label-gold {
             color: var(--primary-gold);
             font-family: 'Cinzel', serif;
             font-weight: bold;
-            font-size: 0.95rem;
+            font-size: 1rem;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
         }
 
-        .value-text { font-size: 1.25rem; font-weight: 400; }
+        .value-text { font-size: 1.3rem; font-weight: 400; color: #fff; }
+
+        /* 五行註解 (問題6) */
+        .element-desc {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 8px;
+            font-style: italic;
+        }
 
         .profile-box {
-            background: rgba(181, 155, 88, 0.08);
-            padding: 25px;
+            background: rgba(181, 155, 88, 0.06);
+            padding: 30px;
             border-left: 4px solid var(--primary-gold);
-            margin-top: 30px;
-            line-height: 1.8;
-            font-size: 1.05rem;
+            margin-top: 40px;
+            line-height: 1.9;
+            font-size: 1.1rem;
         }
 
-        /* 問題6: 五行註解 */
-        .element-guide {
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 10px;
-            font-style: italic;
-            line-height: 1.4;
-        }
-
-        /* 問題1 & 2: Footer 修正 */
+        /* Footer 修正 (問題1, 2) */
         footer {
             width: 100%;
-            padding: 60px 20px;
+            padding: 80px 20px;
             background: #080f0e;
             text-align: center;
-            font-size: 0.9rem;
             border-top: 1px solid var(--border-color);
             box-sizing: border-box;
         }
 
-        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 30px; letter-spacing: 2px; }
-        .footer-section { margin-bottom: 30px; }
-        .footer-info { line-height: 2.2; color: #aaa; }
-        .footer-info b { color: var(--text-light); display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+        .footer-title { 
+            color: var(--primary-gold); 
+            font-family: 'Cinzel', serif; 
+            margin-bottom: 40px; 
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .footer-grid {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            text-align: center;
+        }
+
+        .footer-col b {
+            color: var(--primary-gold);
+            display: block;
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+            letter-spacing: 2px;
+        }
+
+        .footer-col p {
+            color: #aaa;
+            line-height: 2;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        /* 手機版適配 */
+        @media (max-width: 600px) {
+            .footer-grid { grid-template-columns: 1fr; }
+            h1.main-title { font-size: 1.4rem; }
+            .logo-text { font-size: 1.8rem; letter-spacing: 6px; }
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
@@ -224,12 +263,14 @@
         
         <div class="input-group">
             <label>Select Your Birthday</label>
-            <input type="date" id="birthday" required>
+            <div class="date-input-wrapper">
+                <input type="date" id="birthday" required>
+            </div>
             <button onclick="revealZodiac()" class="reveal-btn">REVEAL</button>
         </div>
 
         <div id="result">
-            <div class="zodiac-img-wrapper" id="imgBox"></div>
+            <div class="zodiac-img-box" id="zodiacIcon"></div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -239,7 +280,7 @@
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
-                <div class="element-guide">
+                <div class="element-desc">
                     Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
                 </div>
             </div>
@@ -263,43 +304,44 @@
 
     <footer>
         <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
-        
-        <div class="footer-section">
-            <div class="footer-info">
+        <div class="footer-grid">
+            <div class="footer-col">
                 <b>Contact</b>
-                TEL: 01202 611622<br>
-                EMAIL: hello@ni-hao.life
+                <p>TEL: 01202 611622</p>
+                <p>EMAIL: hello@ni-hao.life</p>
             </div>
-        </div>
-
-        <div class="footer-section">
-            <div class="footer-info">
+            <div class="footer-col">
                 <b>Location</b>
-                89 Commercial Road, Poole, Dorset BH14 0JD
+                <p>89 Commercial Road, Poole,</p>
+                <p>Dorset BH14 0JD</p>
             </div>
         </div>
     </footer>
 
     <script>
-        // 圖片地址對應表 (使用穩定網址)
-        const zodiacImages = {
-            Rat: "https://cdn-icons-png.flaticon.com/512/3069/3069150.png",
-            Ox: "https://cdn-icons-png.flaticon.com/512/3069/3069151.png",
-            Tiger: "https://cdn-icons-png.flaticon.com/512/3069/3069152.png",
-            Rabbit: "https://cdn-icons-png.flaticon.com/512/3069/3069153.png",
-            Dragon: "https://cdn-icons-png.flaticon.com/512/3069/3069154.png",
-            Snake: "https://cdn-icons-png.flaticon.com/512/3069/3069155.png",
-            Horse: "https://cdn-icons-png.flaticon.com/512/3069/3069156.png",
-            Goat: "https://cdn-icons-png.flaticon.com/512/3069/3069157.png",
-            Monkey: "https://cdn-icons-png.flaticon.com/512/3069/3069158.png",
-            Rooster: "https://cdn-icons-png.flaticon.com/512/3069/3069159.png",
-            Dog: "https://cdn-icons-png.flaticon.com/512/3069/3069160.png",
-            Pig: "https://cdn-icons-png.flaticon.com/512/3069/3069161.png"
+        // 使用內嵌 SVG 以確保 100% 顯示
+        const getZodiacSVG = (sign) => {
+            const colors = "fill='#b59b58'";
+            const icons = {
+                Rat: `<svg viewBox='0 0 64 64' ${colors}><path d='M50,45c-2,0-4,1-6,1c-5,0-9-4-9-9s4-9,9-9c2,0,4,1,6,1c4,0,7-3,7-7s-3-7-7-7c-6,0-12,4-15,10c-3-6-9-10-15-10c-4,0-7,3-7,7s3,7,7,7c2,0,4-1,6-1c5,0,9,4,9,9s-4,9-9,9c-2,0-4-1-6-1c-4,0-7,3-7,7s3,7,7,7c6,0,12-4,15-10C38,41,44,45,50,45z'/></svg>`,
+                Ox: `<svg viewBox='0 0 64 64' ${colors}><path d='M56,18c-5,0-10,4-12,9c-2-5-7-9-12-9s-10,4-12,9c-2-5-7-9-12-9v6c5,0,8,4,8,8v12c0,4,3,7,7,7h24c4,0,7-3,7-7V32c0-4,3-8,8-8V18z'/></svg>`,
+                Tiger: `<svg viewBox='0 0 64 64' ${colors}><path d='M32,8C18.7,8,8,18.7,8,32s10.7,24,24,24s24-10.7,24-24S45.3,8,32,8z M32,48c-8.8,0-16-7.2-16-16s7.2-16,16-16s16,7.2,16,16S40.8,48,32,48z'/></svg>`,
+                Rabbit: `<svg viewBox='0 0 64 64' ${colors}><path d='M42,8c-4.4,0-8,3.6-8,8v4c0,4.4,3.6,8,8,8s8-3.6,8-8v-4C50,11.6,46.4,8,42,8z M22,8c-4.4,0-8,3.6-8,8v4c0,4.4,3.6,8,8,8s8-3.6,8-8v-4C30,11.6,26.4,8,22,8z M32,30c-11,0-20,9-20,20h40C52,39,43,30,32,30z'/></svg>`,
+                Dragon: `<svg viewBox='0 0 64 64' ${colors}><path d='M32,4C16.5,4,4,16.5,4,32s12.5,28,28,28s28-12.5,28-28S47.5,4,32,4z M32,52c-11,0-20-9-20-20s9-20,20-20s20,9,20,20S43,52,32,52z'/></svg>`,
+                Snake: `<svg viewBox='0 0 64 64' ${colors}><path d='M32,12c-8,0-14,6-14,14s6,14,14,14s14,6,14,14s-6,14-14,14v-6c4,0,8-4,8-8s-4-8-8-8s-14-6-14-14s6-14,14-14V12z'/></svg>`,
+                Horse: `<svg viewBox='0 0 64 64' ${colors}><path d='M48,12H32c-8.8,0-16,7.2-16,16v24h8V40h24c4.4,0,8-3.6,8-8V20C56,15.6,52.4,12,48,12z'/></svg>`,
+                Goat: `<svg viewBox='0 0 64 64' ${colors}><path d='M32,16c-6.6,0-12,5.4-12,12v16h24V28C44,21.4,38.6,16,32,16z'/></svg>`,
+                Monkey: `<svg viewBox='0 0 64 64' ${colors}><circle cx='32' cy='32' r='20'/></svg>`,
+                Rooster: `<svg viewBox='0 0 64 64' ${colors}><path d='M32,8L12,48h40L32,8z'/></svg>`,
+                Dog: `<svg viewBox='0 0 64 64' ${colors}><path d='M32,12c-11,0-20,9-20,20v20h40V32C52,21,43,12,32,12z'/></svg>`,
+                Pig: `<svg viewBox='0 0 64 64' ${colors}><circle cx='32' cy='32' r='20'/></svg>`
+            };
+            return icons[sign] || '';
         };
 
-        const zodiacData = {
-            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac." },
-            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience." },
+        const profiles = {
+            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent." },
+            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest." },
             "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous." },
             "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind." },
             "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, and noble." },
@@ -334,11 +376,9 @@
             if (m < 2 || (m === 2 && d < 10)) idx = (idx - 1 + 12) % 12;
 
             const sign = order[idx];
-            const data = zodiacData[sign];
+            const data = profiles[sign];
 
-            // 換圖
-            document.getElementById('imgBox').innerHTML = `<img src="${zodiacImages[sign]}" class="zodiac-img" alt="${sign}">`;
-            
+            document.getElementById('zodiacIcon').innerHTML = getZodiacSVG(sign);
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resHoro').innerText = getHoro(m, d);
@@ -346,7 +386,7 @@
             document.getElementById('resProfile').innerText = data.text;
 
             document.getElementById('result').style.display = 'block';
-            window.scrollTo({ top: document.getElementById('result').offsetTop - 30, behavior: 'smooth' });
+            window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
         }
     </script>
 </body>
