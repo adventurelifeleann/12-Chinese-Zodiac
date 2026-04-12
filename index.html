@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Find Your Chinese Zodiac Sign | NI HAO</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
@@ -26,68 +26,69 @@
             min-height: 100vh;
         }
 
+        /* Logo 橫向排列修正 */
         header {
-            padding: 50px 20px;
+            padding: 40px 10px;
             text-align: center;
             width: 100%;
         }
 
         .logo-container {
-            max-width: 450px;
+            max-width: 90%;
             margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
             border-bottom: 1px solid var(--primary-gold);
-            padding: 20px 0;
+            padding: 15px 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
 
         .logo-text {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
-            letter-spacing: 12px;
+            font-size: 1.8rem;
+            letter-spacing: 6px;
             color: var(--primary-gold);
             margin: 0;
         }
 
         .logo-cn {
-            font-size: 1.1rem;
-            letter-spacing: 2px;
+            font-size: 1rem;
             color: #5b6e6a;
+            white-space: nowrap;
         }
 
         .container {
-            width: 90%;
-            max-width: 600px;
+            width: 85%;
+            max-width: 500px;
             background: var(--dark-box);
-            padding: 40px;
+            padding: 30px 20px;
             border-radius: 4px;
             box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            margin-bottom: 60px;
+            margin-bottom: 50px;
             border: 1px solid var(--border-color);
-            box-sizing: border-box;
+            text-align: center;
         }
 
+        /* 標題強制兩行修正 (問題1) */
         h1.main-title {
             font-family: 'Cinzel', serif;
             color: var(--primary-gold);
             text-align: center;
-            font-size: 1.6rem;
-            margin-bottom: 35px;
-            letter-spacing: 1px;
-        }
-
-        .input-group {
+            font-size: 1.4rem;
             margin-bottom: 30px;
-            text-align: center;
+            line-height: 1.4;
+        }
+        
+        .main-title span {
+            display: block; /* 讓內容強制分開兩行 */
         }
 
         label {
             display: block;
             margin-bottom: 15px;
-            font-weight: 300;
+            font-size: 0.9rem;
             letter-spacing: 1px;
             color: #aaa;
         }
@@ -96,77 +97,73 @@
             background: transparent;
             border: 1px solid var(--border-color);
             color: white;
-            padding: 15px;
+            padding: 12px;
             font-size: 1.1rem;
             width: 100%;
-            max-width: 300px;
-            outline: none;
+            max-width: 280px;
             text-align: center;
+            margin-bottom: 20px;
             box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
+            border-radius: 0;
         }
 
         .reveal-btn {
             background: var(--primary-gold);
             color: var(--dark-green);
             border: none;
-            padding: 15px 40px;
+            padding: 15px;
             font-family: 'Cinzel', serif;
             font-weight: bold;
             letter-spacing: 3px;
             font-size: 1.1rem;
             cursor: pointer;
             width: 100%;
-            max-width: 300px;
-            margin-top: 25px;
+            max-width: 280px;
             transition: 0.3s;
         }
 
-        .reveal-btn:active { background: #d4bc7d; transform: scale(0.98); }
-
+        /* 結果區域 */
         #result {
             display: none;
-            margin-top: 40px;
+            margin-top: 35px;
             border-top: 1px solid var(--border-color);
-            padding-top: 40px;
+            padding-top: 30px;
             text-align: left;
-            animation: fadeIn 0.6s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .result-item { margin-bottom: 25px; }
+        .result-item { margin-bottom: 20px; }
 
         .label-gold {
             color: var(--primary-gold);
             font-family: 'Cinzel', serif;
             font-weight: bold;
+            font-size: 0.9rem;
             display: block;
-            margin-bottom: 8px;
-            font-size: 1rem;
+            margin-bottom: 5px;
         }
 
-        .value-text { font-size: 1.2rem; font-weight: 400; }
+        .value-text { font-size: 1.1rem; font-weight: 400; }
 
         .profile-box {
             background: rgba(181, 155, 88, 0.08);
-            padding: 25px;
-            border-left: 4px solid var(--primary-gold);
-            margin-top: 25px;
-            line-height: 1.8;
+            padding: 20px;
+            border-left: 3px solid var(--primary-gold);
+            margin-top: 20px;
+            line-height: 1.6;
+            font-size: 0.95rem;
         }
 
         footer {
             width: 100%;
-            padding: 50px 0;
+            padding: 40px 0;
             background: #080f0e;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             border-top: 1px solid var(--border-color);
         }
 
-        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 20px; }
-        .footer-info { line-height: 2.2; color: #aaa; }
+        .footer-title { color: var(--primary-gold); font-family: 'Cinzel', serif; margin-bottom: 15px; }
+        .footer-info { line-height: 2; color: #888; padding: 0 20px; }
     </style>
 </head>
 <body>
@@ -180,18 +177,22 @@
     </header>
 
     <div class="container">
-        <h1 class="main-title">Discover Your Chinese Zodiac Sign</h1>
+        <h1 class="main-title">
+            <span>Discover Your</span>
+            <span>Chinese Zodiac Sign</span>
+        </h1>
+        
         <div class="input-group">
-            <label for="birthday">Select Your Birthday</label>
+            <label>Select Your Birthday</label>
             <input type="date" id="birthday">
             <br>
-            <button onclick="calculateZodiac()" class="reveal-btn">REVEAL</button>
+            <button onclick="revealZodiac()" class="reveal-btn">REVEAL</button>
         </div>
 
         <div id="result">
             <div class="result-item">
-                <span class="label-gold">Lunar Birthday</span>
-                <span id="resLunar" class="value-text"></span>
+                <span class="label-gold">Zodiac Spirit Pairing</span>
+                <span id="resSpirit" class="value-text"></span>
             </div>
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -200,9 +201,6 @@
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
-                <div style="font-size:0.8rem; color:#888; margin-top:5px; font-style:italic;">
-                    Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).
-                </div>
             </div>
             <div class="result-item">
                 <span class="label-gold">Horoscope</span>
@@ -219,69 +217,62 @@
         <div class="footer-title">NI HAO RESTAURANT - POOLE</div>
         <div class="footer-info">
             <b>Contact</b><br>
-            TEL: 01202 611622 | EMAIL: hello@ni-hao.life<br>
+            TEL: 01202 611622 | hello@ni-hao.life<br>
             <b>Location</b><br>
             89 Commercial Road, Poole, Dorset BH14 0JD
         </div>
     </footer>
 
     <script>
-        // 完全內置的生肖與描述
-        const profiles = {
-            "Rat": { element: "Water", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
-            "Ox": { element: "Earth", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
-            "Tiger": { element: "Wood", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them." },
-            "Rabbit": { element: "Wood", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace." },
-            "Dragon": { element: "Earth", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
-            "Snake": { element: "Fire", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind." },
-            "Horse": { element: "Fire", text: "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces." },
-            "Goat": { element: "Earth", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions." },
-            "Monkey": { element: "Metal", text: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They are master problem solvers who love to entertain." },
-            "Rooster": { element: "Metal", text: "Hardworking, observant, courageous, punctual, and loves to stand out. They are loyal friends who value honesty and present themselves with great pride." },
-            "Dog": { element: "Earth", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. Their integrity and sense of justice are unmatched." },
-            "Pig": { element: "Water", text: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac." }
+        const zodiacData = {
+            "Rat": { element: "Water (Creativity)", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
+            "Ox": { element: "Earth (Stability)", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
+            "Tiger": { element: "Wood (Growth)", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them." },
+            "Rabbit": { element: "Wood (Growth)", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace." },
+            "Dragon": { element: "Earth (Stability)", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
+            "Snake": { element: "Fire (Passion)", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind." },
+            "Horse": { element: "Fire (Passion)", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces." },
+            "Goat": { element: "Earth (Stability)", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions." },
+            "Monkey": { element: "Metal (Ambition)", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They are master problem solvers who love to entertain." },
+            "Rooster": { element: "Metal (Ambition)", spirit: "Scotch - Hardworking & Observant", text: "Hardworking, observant, courageous, punctual, and loves to stand out. They are loyal friends who value honesty and present themselves with great pride." },
+            "Dog": { element: "Earth (Stability)", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. Their integrity and sense of justice are unmatched." },
+            "Pig": { element: "Water (Creativity)", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac." }
         };
 
-        const zodiacOrder = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
+        const order = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
 
-        // 西洋星座
         function getHoro(m, d) {
-            const data = [20,19,21,20,21,21,23,23,23,23,22,22];
+            const days = [20,19,21,20,21,21,23,23,23,23,22,22];
             const names = ["Capricorn", "Aquarius", "Pisces", "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn"];
-            return d < data[m-1] ? names[m-1] : names[m];
+            return d < days[m-1] ? names[m-1] : names[m];
         }
 
-        // 核心計算邏輯 (不依賴外部庫)
-        function calculateZodiac() {
-            const input = document.getElementById('birthday').value;
-            if (!input) { alert("Please select a date."); return; }
+        function revealZodiac() {
+            const val = document.getElementById('birthday').value;
+            if (!val) return;
             
-            const date = new Date(input);
+            const date = new Date(val);
             const y = date.getFullYear();
             const m = date.getMonth() + 1;
             const d = date.getDate();
 
-            // 簡易生肖計算 (對英國客人來說，這比等不到反應好得多)
-            // 西元1924是鼠年
-            let zIndex = (y - 1924) % 12;
-            if (zIndex < 0) zIndex += 12;
+            // 精簡生肖算法 (1924為鼠年)
+            let idx = (y - 1924) % 12;
+            if (idx < 0) idx += 12;
             
-            // 針對春節前出生的客人進行微調 (估算平均春節日期)
-            // 如果是1月或2月初出生，通常屬於前一個生肖
-            let finalZodiac = zodiacOrder[zIndex];
-            if (m === 1 || (m === 2 && d < 10)) {
-                let prevIndex = (zIndex - 1 + 12) % 12;
-                finalZodiac = zodiacOrder[prevIndex];
+            // 春節前出生微調
+            if (m < 2 || (m === 2 && d < 10)) {
+                idx = (idx - 1 + 12) % 12;
             }
 
-            const profile = profiles[finalZodiac];
+            const sign = order[idx];
+            const data = zodiacData[sign];
 
-            // 顯示結果
-            document.getElementById('resLunar').innerText = `Lunar Year of the ${finalZodiac}`;
-            document.getElementById('resZodiac').innerText = finalZodiac;
-            document.getElementById('resElement').innerText = profile.element;
+            document.getElementById('resZodiac').innerText = sign;
+            document.getElementById('resSpirit').innerText = data.spirit;
+            document.getElementById('resElement').innerText = data.element;
             document.getElementById('resHoro').innerText = getHoro(m, d);
-            document.getElementById('resProfile').innerText = profile.text;
+            document.getElementById('resProfile').innerText = data.text;
 
             document.getElementById('result').style.display = 'block';
             window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
