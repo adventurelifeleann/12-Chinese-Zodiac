@@ -24,6 +24,7 @@
 
         header { padding: 50px 10px; text-align: center; width: 100%; }
 
+        /* 強化品牌 Logo 視覺 */
         .logo-container {
             max-width: 600px; margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
@@ -47,12 +48,14 @@
             letter-spacing: 3px; font-weight: 400;
         }
 
+        /* 增加標題與輸入框間距 */
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
         label {
             display: block; margin-bottom: 35px; 
             font-size: 1rem; letter-spacing: 2px; color: #aaa;
         }
 
+        /* 修正日期框 yyyy/mm/dd 同行顯示 */
         input[type="date"] {
             background: transparent; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
@@ -77,13 +80,8 @@
             cursor: pointer; width: 100%; max-width: 340px; margin-top: 35px;
         }
 
-        #result { 
-            display: none; 
-            margin-top: 50px; 
-            border-top: 1px solid var(--border-color); 
-            padding-top: 45px; 
-            text-align: left; 
-        }
+        /* 結果區塊（無圖片版） */
+        #result { display: none; margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 45px; text-align: left; }
 
         .result-title-box { text-align: center; margin-bottom: 40px; }
         .large-zodiac-name { font-family: 'Cinzel', serif; font-size: 3.5rem; color: var(--primary-gold); margin: 0; letter-spacing: 8px; }
@@ -106,6 +104,8 @@
         }
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
+        
+        /* Footer 文字設為白色 */
         .footer-col p { color: #FFFFFF; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
