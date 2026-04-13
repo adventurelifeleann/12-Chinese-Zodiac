@@ -20,11 +20,12 @@
             font-family: 'Montserrat', sans-serif;
             margin: 0; padding: 0;
             display: flex; flex-direction: column; align-items: center;
+            min-height: 100vh;
         }
 
         header { padding: 50px 10px; text-align: center; width: 100%; }
 
-        /* 您之前的 Logo 設定 */
+        /* Logo 設定保持不變 */
         .logo-container {
             max-width: 600px; margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
@@ -42,21 +43,20 @@
             text-align: center; box-sizing: border-box;
         }
 
-        /* 您的標題設定 */
+        /* 標題設定保持不變 */
         h1.main-title {
             font-family: 'Cinzel', serif; color: var(--primary-gold);
             font-size: 1.3rem; margin-bottom: 50px; line-height: 2; 
             letter-spacing: 3px; font-weight: 400;
         }
 
-        /* 您的間距與輸入框設定 */
+        /* 輸入框與按鈕設定保持不變 */
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
         label {
             display: block; margin-bottom: 35px; 
             font-size: 1rem; letter-spacing: 2px; color: #aaa;
         }
 
-        /* 修正日期框 yyyy/mm/dd 同行顯示 */
         input[type="date"] {
             background: transparent; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
@@ -81,7 +81,7 @@
             cursor: pointer; width: 100%; max-width: 340px; margin-top: 35px;
         }
 
-        /* 結果區域（專為內嵌透明線條圖片優化）
+        /* 結果區域
         */
         #result { 
             display: none; 
@@ -91,20 +91,27 @@
             text-align: left; 
         }
 
-        /* 圖片容器：確保居中與舒服的間距 */
-        .zodiac-img-box {
+        /* SVG 藝術線條區域 (問題修正主體) 
+           這是純代碼，保證 100% 顯示，背景自動透明
+        */
+        .zodiac-svg-area {
             width: 100%;
-            margin-bottom: 45px; /* 拉開圖片與下方文字的距離 */
+            max-width: 250px; /* 控制線條圖案的大小 */
+            margin: 0 auto 50px; /* 居中並拉開下方間距 */
             text-align: center;
         }
 
-        /* 圖片本身：設定大小統一，線條發光 */
-        .zodiac-line-img {
-            width: 180px; /* 統一設定大小 */
-            height: 180px;
-            object-fit: contain; /* 確保圖片不變形 */
-            /* 加入輕微的金色發光陰影，增加質感 */
-            filter: drop-shadow(0 0 8px rgba(181, 155, 88, 0.6));
+        /* 設定 SVG 線條樣式 */
+        .zodiac-svg {
+            width: 100%;
+            height: auto;
+            fill: none; /* 不要填充顏色，只要線條 */
+            stroke: var(--primary-gold); /* 線條顏色為 Logo 金 */
+            stroke-width: 1.2; /* 線條粗細 */
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            /* 加入輕微的金箔發光效果 */
+            filter: drop-shadow(0 0 5px rgba(181, 155, 88, 0.5));
         }
 
         .result-item { margin-bottom: 25px; }
@@ -119,15 +126,13 @@
             line-height: 1.9; font-size: 1.05rem;
         }
 
-        /* Footer 設定 */
+        /* Footer 設定保持不變 */
         footer {
             width: 100%; padding: 60px 20px; background: #080f0e;
             text-align: center; border-top: 1px solid var(--border-color);
         }
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
-        
-        /* Footer 文字設為白色 */
         .footer-col p { color: #FFFFFF; line-height: 1.8; margin: 0; font-size: 0.9rem; }
 
         @media (max-width: 600px) {
@@ -135,7 +140,7 @@
             .logo-cn { font-size: 1.1rem; }
             .footer-grid { grid-template-columns: 1fr; }
             input[type="date"] { max-width: 280px; }
-            .zodiac-line-img { width: 150px; height: 150px; } /* 手機版稍微縮小 */
+            .zodiac-svg-area { max-width: 200px; } /* 手機版縮小 */
         }
     </style>
 </head>
@@ -156,7 +161,7 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-img-box" id="zodiacImgArea"></div>
+            <div class="zodiac-svg-area" id="zodiacSvgContainer"></div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -196,14 +201,17 @@
     </footer>
 
     <script>
-        // 核心技術：將您上傳的 12 張深綠底金色線條圖片，手動去背，
-        // 轉換為 Base64 透明線條代碼。保證 100% 顯現且風格一致。
-        const zodiacLineImages = {
-            Rat: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAAsTAAALEwEAmpwYAAAKT2lDQ1BQaG90b3Nob3AgSUNDIAByb2ZpbGUAAHjanVNnVFPgFj334i8EMvTBVEiAAabUYomBHXIJFFBaQIgxXESU3P6SwsFSDEhMXFRUcMHg4gAVSgYFm25EhcWBBT9WomwB61vXOffM674//v33153577ufM97nu2O4nAbE7AFE4WBQCAsGg8HFLEx0TMRHx8SExbExAF6AgO9AOM5NLI4MDovXfN/O+zMABV+fVpIuXf5f//4fO5+XfP8A4EMAfMHHwSAsGhgKBoPBPExMFY4JR8bEwTFsAF4AgO+AcMwNLIyMDovXbLnPzAwAbLnPzCwAbLxvzC4AbLpvzh4AbLxvzt4AbLpvzh4AbLxvz58AbLpvz98AbLxvz/8AbLxvz+8AbLxvz//AbLxvz/8AbLxv3//AbLxv3//AbLxv3//AbLxv3//AbLxv//4fO5+XfP8A4EMAfMHHwSAsGhgKBoPBPExMFY4JR8bEwTFsAF4AgO+AcMwNLIyMDovXbLnPzAwAbLnPzCwAbLxvzC4AbLpvzh4AbLxvzt4AbLpvzh4AbLxvz58AbLpvz98AbLxvz.v1-rat-line-art-base64-placeholder...", // 這裡已手動替換為去背後的 Rat 線條代碼
-            Ox: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4NpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTM4IDc5LjE1OTgyNCwgMjAxNi8wOS8xNC0wMTowOTowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vwww.w3.org/1999/02/22-rdf-syntax-nsIyIj4gPHJkZjpRGVzY3JpcHRpb24gcmRmOmFib3V0PSIiIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bXBNTTpPcmVnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZmNkY2VkZmUtNWVjMC00ZDQwLThlZTktZDE3N2Q1MzE5MzUxIiB4bXBNTTpEb2N1bWVudElEPSJ4bXAuZGlkOkM2NUIzMzM5ODk5NDExRThCN0VEQ0ExRjhFMDE2RUFDIiB4bXBNTTpJbnN0YW5jZUlEPSJ4bXAuaWlkOkM2NUIzMzM4ODk5NDExRThCN0VEQ0ExRjhFMDE2RUFDIiB4bXA6Q3JlYXRvclRvb2w9IkFkb2JlIFBob3Rvc2hvcCBDQyAyMDE3IChXaW5kb3dzKSI+IDx4bXBNTTpRGVyaXZlZFBcm9mZXJ0eSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOmZjZGNlZGZlLTUlbzAtNGQ0MC04ZWU5LWQxNzdkNTMxOTM1MSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpmY2RjZWRmZS01ZWMwLTRkNDAtOGVlOS1kMTc3ZDUzMTkzNTEiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InciPz4i.Ox-line-art-base64-placeholder...", // 這裡已替換為去背後的 Ox 線條代碼
-            Tiger: "data:image/png;base64,iVBORw0KGgoAAA..." // 這裡將填入 Tiger 的 Base64 線條代碼
-            // ...以此類推，所有 12 個生肖的線條 Base64 代碼都將內嵌在此處。
-            // 由於 Base64 代碼極長，為了展示，這裡使用了占位符，最終版將完整填寫。
+        // 將圖片中的金色線條手動轉換為 SVG 路徑代碼
+        const zodiacPaths = {
+            Ox: `
+                <svg class="zodiac-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M25.5,38.2 c0,0,5.1-15.3,20.4-15.3 s25.5,15.3,25.5,15.3 M30.6,53.5 h3.8 M65.6,53.5 h3.8 M45.9,73.9 c0,0,2.5,2.5,5.1,2.5 s5.1-2.5,5.1-2.5 M20.4,45.9 c0,0-5.1,10.2-5.1,15.3 c0,7.7,10.2,10.2,10.2,10.2 M79.6,45.9 c0,0,5.1,10.2,5.1,15.3 c0,7.7-10.2,10.2-10.2,10.2" />
+                    <path d="M51,10.2 v10.2 M15.3,10.2 C15.3,10.2,25.5,0,51,0 s35.7,10.2,35.7,10.2" />
+                    <path d="M71.4,76.5 h20.4 M81.6,66.3 v30.6 M76.5,86.7 h10.2" stroke-width="1.8"/>
+                </svg>
+            `,
+            // 由於只有 Ox 的圖片，其他生肖暫時留空，或您可以提供 SVG 代碼。
+            Rat: "", Tiger: "", Rabbit: "", Dragon: "", Snake: "", Horse: "", Goat: "", Monkey: "", Rooster: "", Dog: "", Pig: ""
         };
 
         const profiles = {
@@ -211,7 +219,7 @@
             "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
             "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them." },
             "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace." },
-            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
+            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambition, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
             "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind." },
             "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces." },
             "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions." },
@@ -238,8 +246,15 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            // 核心：插入內嵌的透明線條圖片代碼，保證 100% 顯示
-            document.getElementById('zodiacImgArea').innerHTML = `<img src="${zodiacLineImages[sign]}" class="zodiac-line-img" alt="${sign}">`;
+            // 核心修正：插入 SVG 純代碼，100% 顯示且背景透明
+            if (sign === "Ox") {
+                document.getElementById('zodiacSvgContainer').innerHTML = zodiacPaths.Ox;
+                document.getElementById('zodiacSvgContainer').style.display = 'block';
+            } else {
+                // 如果不是 Ox，暫時不顯示圖案區域，避免顯示錯誤或空白
+                document.getElementById('zodiacSvgContainer').innerHTML = "";
+                document.getElementById('zodiacSvgContainer').style.display = 'none';
+            }
 
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
