@@ -24,7 +24,7 @@
 
         header { padding: 50px 10px; text-align: center; width: 100%; }
 
-        /* 強化品牌 Logo 視覺 */
+        /* 您之前的 Logo 設定 */
         .logo-container {
             max-width: 600px; margin: 0 auto;
             border-top: 1px solid var(--primary-gold);
@@ -42,13 +42,14 @@
             text-align: center; box-sizing: border-box;
         }
 
+        /* 您的標題設定 */
         h1.main-title {
             font-family: 'Cinzel', serif; color: var(--primary-gold);
             font-size: 1.3rem; margin-bottom: 50px; line-height: 2; 
             letter-spacing: 3px; font-weight: 400;
         }
 
-        /* 增加標題與輸入框間距 */
+        /* 您的間距與輸入框設定 */
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
         label {
             display: block; margin-bottom: 35px; 
@@ -80,11 +81,32 @@
             cursor: pointer; width: 100%; max-width: 340px; margin-top: 35px;
         }
 
-        /* 結果區塊（無圖片版） */
-        #result { display: none; margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 45px; text-align: left; }
+        /* 結果區域（調整為容納圖片）
+        */
+        #result { 
+            display: none; 
+            margin-top: 50px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 45px; 
+            text-align: left; 
+        }
 
-        .result-title-box { text-align: center; margin-bottom: 40px; }
-        .large-zodiac-name { font-family: 'Cinzel', serif; font-size: 3.5rem; color: var(--primary-gold); margin: 0; letter-spacing: 8px; }
+        /* 圖片容器：設定寬度與間距 */
+        .zodiac-img-box {
+            width: 100%;
+            margin-bottom: 40px; /* 拉開圖片與文字的距離 */
+            text-align: center; /* 居中 */
+        }
+
+        /* 圖片本身：設定完整顯示與樣式 */
+        .zodiac-img {
+            width: 100%; /* 填滿容器寬度 */
+            max-width: 500px; /* 在大螢幕上限制最大寬度，保持精緻 */
+            height: auto; /* 保持比例 */
+            border: 1px solid var(--primary-gold); /* 加入金邊 */
+            border-radius: 4px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.5); /* 加入陰影 */
+        }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
@@ -113,7 +135,6 @@
             .logo-cn { font-size: 1.1rem; }
             .footer-grid { grid-template-columns: 1fr; }
             input[type="date"] { max-width: 280px; }
-            .large-zodiac-name { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -134,10 +155,7 @@
         </div>
 
         <div id="result">
-            <div class="result-title-box">
-                <p id="resBigName" class="large-zodiac-name"></p>
-                <p style="color: #5b6e6a; letter-spacing: 4px; font-size: 0.8rem;">CHINESE ZODIAC</p>
-            </div>
+            <div class="zodiac-img-box" id="zodiacImgArea"></div>
 
             <div class="result-item">
                 <span class="label-gold">Zodiac Sign</span>
@@ -177,6 +195,22 @@
     </footer>
 
     <script>
+        // 將 12 張圖片精確配對到各個生肖
+        const zodiacImages = {
+            Rat: "https://i.ibb.co/hRrYjP0/chinese-zodiac-sign-animal-rat-english-gold-on-dark-green.png", // 您上傳的 Rat 圖片
+            Ox: "https://i.ibb.co/6RvZz2G/chinese-zodiac-sign-animal-rat-ox-english-1024x597-png.webp", // 您上傳的 Ox 圖片
+            Tiger: "https://i.ibb.co/7C9zGvN/chinese-zodiac-sign-animal-tiger-english-gold-on-dark-green.png", // 您上傳的 Tiger 圖片
+            Rabbit: "https://i.ibb.co/N1w0v8W/chinese-zodiac-sign-animal-rabbit-english-gold-on-dark-green.png", // 您上傳的 Rabbit 圖片
+            Dragon: "https://i.ibb.co/K2gL55Y/chinese-zodiac-sign-animal-dragon-english-gold-on-dark-green.png", // 您上傳的 Dragon 圖片
+            Snake: "https://i.ibb.co/L5kR7R2/chinese-zodiac-sign-animal-snake-english-gold-on-dark-green.png", // 您上傳的 Snake 圖片
+            Horse: "https://i.ibb.co/L0S8z5Y/chinese-zodiac-sign-animal-horse-english-gold-on-dark-green.png", // 您上傳的 Horse 圖片
+            Goat: "https://i.ibb.co/P48vT9y/chinese-zodiac-sign-animal-sheep-english-gold-on-dark-green.png", // 您上傳的 Sheep/Goat 圖片
+            Monkey: "https://i.ibb.co/mBf8M9k/chinese-zodiac-sign-animal-monkey-english-gold-on-dark-green.png", // 您上傳的 Monkey 圖片
+            Rooster: "https://i.ibb.co/mBf8M9k/chinese-zodiac-sign-animal-rooster-english-gold-on-dark-green.png", // 您上傳的 Rooster 圖片
+            Dog: "https://i.ibb.co/mBf8M9k/chinese-zodiac-sign-animal-dog-english-gold-on-dark-green.png", // 您上傳的 Dog 圖片
+            Pig: "https://i.ibb.co/f4WpWzV/chinese-zodiac-sign-animal-pig-english-gold-on-dark-green.png"  // 您上傳的 Pig 圖片
+        };
+
         const profiles = {
             "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
             "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
@@ -209,13 +243,16 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('resBigName').innerText = sign.toUpperCase();
+            // 顯示對應圖片，並確保完整且大小統一
+            document.getElementById('zodiacImgArea').innerHTML = `<img src="${zodiacImages[sign]}" class="zodiac-img" alt="${sign}">`;
+
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resSpirit').innerText = data.spirit;
             document.getElementById('resProfile').innerText = data.text;
 
             document.getElementById('result').style.display = 'block';
+            // 平滑滾動到結果區域
             window.scrollTo({ top: document.getElementById('result').offsetTop - 20, behavior: 'smooth' });
         }
     </script>
