@@ -61,6 +61,15 @@
             box-sizing: border-box; position: relative;
         }
 
+        input[type="date"]:before {
+            content: "yyyy / mm / dd";
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(-50%, -50%);
+            color: #555; width: 100%; white-space: nowrap;
+            pointer-events: none;
+        }
+        input[type="date"]:focus:before, input[type="date"]:valid:before { display: none; }
+
         .reveal-btn {
             background: var(--primary-gold); color: var(--dark-green);
             border: none; padding: 18px; font-family: 'Cinzel', serif;
@@ -68,29 +77,23 @@
             cursor: pointer; width: 100%; max-width: 340px; margin-top: 35px;
         }
 
-        #result { display: none; margin-top: 50px; border-top: 1px solid var(--border-color); padding-top: 45px; text-align: left; }
+        #result { 
+            display: none; 
+            margin-top: 50px; 
+            border-top: 1px solid var(--border-color); 
+            padding-top: 45px; 
+            text-align: left; 
+        }
 
-        /* SVG 藝術線條樣式：100% 顯示，背景透明 */
-        .zodiac-art-container {
-            width: 100%;
-            max-width: 200px;
-            margin: 0 auto 40px;
-            text-align: center;
-        }
-        .zodiac-svg {
-            width: 100%; height: auto;
-            stroke: var(--primary-gold);
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            filter: drop-shadow(0 0 5px rgba(181, 155, 88, 0.4));
-        }
+        .result-title-box { text-align: center; margin-bottom: 40px; }
+        .large-zodiac-name { font-family: 'Cinzel', serif; font-size: 3.5rem; color: var(--primary-gold); margin: 0; letter-spacing: 8px; }
 
         .result-item { margin-bottom: 25px; }
         .label-gold { color: var(--primary-gold); font-family: 'Cinzel', serif; font-weight: bold; font-size: 0.95rem; display: block; margin-bottom: 8px; }
         .value-text { font-size: 1.25rem; color: #fff; }
-        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; }
+        
+        .element-note { font-size: 0.85rem; color: #777; margin-top: 8px; font-style: italic; line-height: 1.5; }
+
         .profile-box {
             background: rgba(181, 155, 88, 0.06); padding: 25px;
             border-left: 4px solid var(--primary-gold); margin-top: 35px;
@@ -104,6 +107,14 @@
         .footer-grid { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
         .footer-col b { color: var(--primary-gold); display: block; margin-bottom: 10px; font-family: 'Cinzel', serif; }
         .footer-col p { color: #FFFFFF; line-height: 1.8; margin: 0; font-size: 0.9rem; }
+
+        @media (max-width: 600px) {
+            .logo-text { font-size: 2rem; letter-spacing: 6px; }
+            .logo-cn { font-size: 1.1rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            input[type="date"] { max-width: 280px; }
+            .large-zodiac-name { font-size: 2.5rem; }
+        }
     </style>
 </head>
 <body>
@@ -123,56 +134,62 @@
         </div>
 
         <div id="result">
-            <div class="zodiac-art-container" id="zodiacSvg"></div>
+            <div class="result-title-box">
+                <p id="resBigName" class="large-zodiac-name"></p>
+                <p style="color: #5b6e6a; letter-spacing: 4px; font-size: 0.8rem;">CHINESE ZODIAC</p>
+            </div>
 
-            <div class="result-item"><span class="label-gold">Zodiac Sign</span><span id="resZodiac" class="value-text"></span></div>
+            <div class="result-item">
+                <span class="label-gold">Zodiac Sign</span>
+                <span id="resZodiac" class="value-text"></span>
+            </div>
+
             <div class="result-item">
                 <span class="label-gold">Five Elements</span>
                 <span id="resElement" class="value-text"></span>
                 <div class="element-note">Metal (Ambition), Water (Creativity), Wood (Growth), Fire (Passion), Earth (Stability).</div>
             </div>
-            <div class="result-item"><span class="label-gold">Zodiac Spirit Pairing</span><span id="resSpirit" class="value-text"></span></div>
-            <div class="profile-box"><span class="label-gold">Personality Profile</span><span id="resProfile"></span></div>
+
+            <div class="result-item">
+                <span class="label-gold">Zodiac Spirit Pairing</span>
+                <span id="resSpirit" class="value-text"></span>
+            </div>
+
+            <div class="profile-box">
+                <span class="label-gold">Personality Profile</span>
+                <span id="resProfile"></span>
+            </div>
         </div>
     </div>
 
     <footer>
         <div class="footer-grid">
-            <div class="footer-col"><b>Contact</b><p>TEL: 01202 611622</p><p>EMAIL: hello@ni-hao.life</p></div>
-            <div class="footer-col"><b>Location</b><p>89 Commercial Road, Poole,<br>Dorset BH14 0JD</p></div>
+            <div class="footer-col">
+                <b>Contact</b>
+                <p>TEL: 01202 611622</p>
+                <p>EMAIL: hello@ni-hao.life</p>
+            </div>
+            <div class="footer-col">
+                <b>Location</b>
+                <p>89 Commercial Road, Poole,<br>Dorset BH14 0JD</p>
+            </div>
         </div>
     </footer>
 
     <script>
-        // 將您圖片中的線條轉換為純 SVG 指令
-        const zodiacArt = {
-            Rat: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M30,70 Q50,20 70,70 M40,50 L60,50 M80,20 L80,40 M70,30 L90,30"/><circle cx="50" cy="45" r="25"/></svg>`,
-            Ox: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M20,30 Q50,10 80,30 L80,60 Q50,90 20,60 Z M50,10 L50,90 M20,45 L80,45 M30,75 L70,75"/></svg>`,
-            Tiger: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M20,20 L80,20 L80,80 L20,80 Z M20,40 L80,40 M20,60 L80,60 M50,20 L50,80"/></svg>`,
-            Rabbit: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M30,20 C10,20 10,50 30,50 C50,50 50,80 70,80 C90,80 90,50 70,50 C50,50 50,20 30,20"/><path d="M40,30 L60,70"/></svg>`,
-            Dragon: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M10,50 Q50,0 90,50 Q50,100 10,50 M30,50 L70,50 M50,30 L50,70"/></svg>`,
-            Snake: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M50,10 C80,10 80,40 50,40 C20,40 20,70 50,70 C80,70 80,95 50,95"/></svg>`,
-            Horse: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M20,80 L50,20 L80,80 M30,60 L70,60 M50,20 L50,80"/></svg>`,
-            Goat: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M30,30 Q50,10 70,30 L70,70 Q50,90 30,70 Z M50,30 L50,70 M30,50 L70,50"/></svg>`,
-            Monkey: `<svg class="zodiac-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="35"/><path d="M35,35 Q50,20 65,35 M35,65 Q50,80 65,65"/></svg>`,
-            Rooster: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M50,10 L80,40 L50,70 L20,40 Z M20,40 L80,40 M50,10 L50,70"/></svg>`,
-            Dog: `<svg class="zodiac-svg" viewBox="0 0 100 100"><path d="M20,20 Q50,50 80,20 M20,80 Q50,50 80,80 M50,10 L50,90"/></svg>`,
-            Pig: `<svg class="zodiac-svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="30"/><path d="M40,40 L40,45 M60,40 L60,45 M40,65 Q50,75 60,65"/></svg>`
-        };
-
         const profiles = {
-            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac." },
-            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience." },
-            "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous." },
-            "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind." },
-            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and vital." },
-            "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers." },
-            "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress." },
-            "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, and appreciative of the finer things." },
-            "Monkey": { element: "Metal", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, innovative, mischievously fun, and quick-witted." },
-            "Rooster": { element: "Metal", spirit: "Scotch - Hardworking & Observant", text: "Hardworking, observant, courageous, punctual, and loves to stand out." },
-            "Dog": { element: "Earth", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable." },
-            "Pig": { element: "Water", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, happy, easygoing, genuine, and joyful." }
+            "Rat": { element: "Water", spirit: "Vodka - Clean & Versatile", text: "Quick-witted, resourceful, charming, versatile, and intelligent. They are the pioneers of the zodiac. Naturally curious, they are excellent at spotting opportunities where others see obstacles." },
+            "Ox": { element: "Earth", spirit: "Dark Rum - Strong & Dependable", text: "Diligent, strong, dependable, determined, and honest. Known for their patience. They possess great endurance and focus, making them the anchor in any storm." },
+            "Tiger": { element: "Wood", spirit: "Bourbon - Brave & Bold", text: "Brave, confident, adventurous, powerful, full of vigor, and courageous. A natural leader. Tigers are charismatic and live life with a raw intensity that inspires those around them." },
+            "Rabbit": { element: "Wood", spirit: "Gin - Elegant & Refined", text: "Gentle, elegant, patient, exceptionally refined, peaceful and kind. They have a keen eye for beauty. Their diplomatic nature helps them navigate complex social situations with grace." },
+            "Dragon": { element: "Earth", spirit: "Champagne - Majestic & Noble", text: "Powerful, charismatic, naturally gifted, ambitious, legendary, noble and the most vital figure in the zodiac. They carry an air of natural authority and boundless energy." },
+            "Snake": { element: "Fire", spirit: "Tequila - Wise & Enigmatic", text: "Wise, enigmatic, deeply intuitive, mysterious, graceful, and deep thinkers. They possess a calm exterior but an incredibly sharp and analytical mind." },
+            "Horse": { element: "Fire", spirit: "Cognac - Energetic & Free-spirited", text: "Energetic, free-spirited, independent, and always chasing progress. They are the life of the party and thrive on freedom and open spaces." },
+            "Goat": { element: "Earth", spirit: "Sake - Creative & Harmonious", text: "Creative, resilient, gentle, peace-loving, mild-mannered, and appreciative of the finer things. Their artistic soul and empathetic nature make them wonderful companions." },
+            "Monkey": { element: "Metal", spirit: "White Rum - Playful & Innovative", text: "Playful, clever, innovative, mischievously fun, quick-witted, and full of curiosity. They are master problem solvers who love to entertain." },
+            "Rooster": { element: "Metal", spirit: "Scotch - Hardworking & Observant", text: "Hardworking, observant, courageous, punctual, and loves to stand out. They are loyal friends who value honesty and present themselves with great pride." },
+            "Dog": { element: "Earth", spirit: "Dry Vermouth - Honest & Reliable", text: "Honest, loyal, kind, faithful, fiercely protective, and reliable. Always ready to help others. Their integrity and sense of justice are unmatched." },
+            "Pig": { element: "Water", spirit: "Prosecco - Compassionate & Joyful", text: "Compassionate, generous, happy, easygoing, genuine, and joyful. They bring happiness to everyone. Their heart of gold makes them the most sincere sign of the zodiac." }
         };
 
         const order = ["Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"];
@@ -192,7 +209,7 @@
             const sign = order[idx];
             const data = profiles[sign];
 
-            document.getElementById('zodiacSvg').innerHTML = zodiacArt[sign];
+            document.getElementById('resBigName').innerText = sign.toUpperCase();
             document.getElementById('resZodiac').innerText = sign;
             document.getElementById('resElement').innerText = data.element;
             document.getElementById('resSpirit').innerText = data.spirit;
