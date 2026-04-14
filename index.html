@@ -43,31 +43,41 @@
         }
         .input-group { margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
         label { display: block; margin-bottom: 35px; font-size: 1rem; letter-spacing: 2px; color: #aaa; }
+        .date-wrapper {
+            position: relative;
+            width: 100%; max-width: 360px;
+            margin: 0 auto;
+        }
+        .date-placeholder {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            color: #aaa; font-size: 1rem;
+            letter-spacing: 2px; pointer-events: none;
+            font-family: 'Montserrat', sans-serif;
+            display: none;
+        }
         input[type="date"] {
-            background: #2a3f35; border: 1px solid var(--border-color);
+            background: #111d1a; border: 1px solid var(--border-color);
             color: white; padding: 15px; font-size: 1.1rem;
-            width: 100%; max-width: 360px; text-align: center;
+            width: 100%; text-align: center;
             border-radius: 0; font-family: 'Montserrat', sans-serif;
             -webkit-appearance: none; appearance: none;
-            cursor: pointer; display: block; margin: 0 auto;
+            cursor: pointer; display: block;
             color-scheme: dark;
         }
         input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1); cursor: pointer; padding: 5px;
         }
-        input[type="date"]::-webkit-datetime-edit {
-            color: white; text-align: center;
-        }
-        input[type="date"]::-webkit-datetime-edit-fields-wrapper {
-            color: white;
-        }
-        input[type="date"]::-webkit-datetime-edit-text {
-            color: #aaa; padding: 0 3px;
-        }
+        input[type="date"]::-webkit-datetime-edit { color: white; }
+        input[type="date"]::-webkit-datetime-edit-fields-wrapper { color: white; }
+        input[type="date"]::-webkit-datetime-edit-text { color: #aaa; padding: 0 3px; }
         input[type="date"]::-webkit-datetime-edit-year-field,
         input[type="date"]::-webkit-datetime-edit-month-field,
-        input[type="date"]::-webkit-datetime-edit-day-field {
-            color: white;
+        input[type="date"]::-webkit-datetime-edit-day-field { color: white; }
+        @media (max-width: 600px) {
+            .date-placeholder { display: block; }
+            input[type="date"]::-webkit-datetime-edit { display: none; }
         }
         .reveal-btn {
             background: var(--primary-gold); color: var(--dark-green);
@@ -142,7 +152,10 @@
     <h1 class="main-title">Discover Your Chinese Zodiac Sign</h1>
     <div class="input-group">
         <label>Select Your Birthday</label>
-        <input type="date" id="birthday" required>
+        <div class="date-wrapper">
+            <input type="date" id="birthday" required onchange="hidePlaceholder()">
+            <span class="date-placeholder" id="datePlaceholder">YYYY / MM / DD</span>
+        </div>
         <button onclick="revealZodiac()" class="reveal-btn">REVEAL</button>
     </div>
 
@@ -394,6 +407,12 @@ function getLunarDate(gy,gm,gd) {
         dayCn:   dayCnArr[lunarD]||(lunarD+"日"),
         dayEn:   (dayEnArr[lunarD]||lunarD+"th")+" Day"
     };
+}
+
+function hidePlaceholder() {
+    var p = document.getElementById('datePlaceholder');
+    var v = document.getElementById('birthday').value;
+    if (p) p.style.display = v ? 'none' : 'block';
 }
 
 function revealZodiac() {
