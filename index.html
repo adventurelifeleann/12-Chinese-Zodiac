@@ -181,7 +181,7 @@
         <div class="footer-col">
             <b>Contact</b>
             <p>TEL: 01202 611622</p>
-            <p>EMAIL: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="97fff2fbfbf8d7f9febafff6f8b9fbfef1f2">[email&#160;protected]</a></p>
+            <p>EMAIL: <span id="contactEmail"></span></p>
         </div>
         <div class="footer-col">
             <b>Location</b>
@@ -413,4 +413,21 @@ function revealZodiac() {
     document.getElementById('resProfile').innerText    = data.text;
     document.getElementById('lunarYear').innerText     = lunar.yearCn;
     document.getElementById('lunarYearEn').innerText   = lunar.yearEn;
-    document.getE
+    document.getElementById('lunarMonth').innerText    = lunar.monthCn;
+    document.getElementById('lunarMonthEn').innerText  = lunar.monthEn;
+    document.getElementById('lunarDay').innerText      = lunar.dayCn;
+    document.getElementById('lunarDayEn').innerText    = lunar.dayEn;
+
+    document.getElementById('result').style.display = 'block';
+    window.scrollTo({top: document.getElementById('result').offsetTop - 20, behavior: 'smooth'});
+}
+
+// Render email without exposing it to Cloudflare scraper
+(function() {
+    var u = 'hello'; var d = 'ni-hao.life';
+    var el = document.getElementById('contactEmail');
+    if (el) { el.textContent = u + '@' + d; el.style.color = '#ffffff'; }
+})();
+</script>
+</body>
+</html>
