@@ -50,12 +50,13 @@
         }
         .date-placeholder {
             position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            color: #aaa; font-size: 0.85rem;
-            letter-spacing: 1px; pointer-events: none;
+            top: 50%; left: 0; right: 0;
+            transform: translateY(-50%);
+            color: #aaa; font-size: 0.8rem;
+            letter-spacing: 0; pointer-events: none;
             font-family: 'Montserrat', sans-serif;
-            white-space: nowrap;
+            white-space: nowrap; overflow: hidden;
+            text-align: center;
             display: none;
         }
         input[type="date"] {
